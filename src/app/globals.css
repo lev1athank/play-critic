@@ -7,6 +7,8 @@
     --gray: #20222F;
     --black: #141622;
     --dark25: rgba(0, 0, 0, .25);
+    --gradient90: linear-gradient(90deg, rgba(103,75,210,1) 0%, rgba(169,97,217,1) 100%);
+    --gradient0: linear-gradient(0, rgba(103,75,210,1) 0%, rgba(169,97,217,1) 100%);
 }
 
 body {
@@ -14,3 +16,4 @@ body {
     height: 100vh; 
     background-color: var(--black); 
 }
+

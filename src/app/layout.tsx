@@ -4,6 +4,13 @@ import "./globals.css";
 import Header from "@/UI/header/Header";
 import Sidebar from "@/UI/sidebar/sidebar";
 
+import { Nunito } from 'next/font/google'
+
+const nunito = Nunito({
+  weight: "400",
+  style: 'normal',
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
   title: "play critic",
@@ -20,7 +27,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className={nunito.className}>
         <Header />
         <Sidebar />
         {children}

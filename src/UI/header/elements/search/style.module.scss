@@ -1,0 +1,24 @@
+.search {
+    margin-left: 20%;
+    background-color: var(--black);
+    width: 340px;
+    height: 70%;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+
+    .inputSearch {
+        width: 90%;
+        margin: 0 10px;
+        height: 60%;
+        background-color: transparent;
+        border: none;
+        font-size: 1.2em;
+        color: white;
+
+        &:focus,
+        &:active {
+            outline: none;
+        }
+    }
+}
