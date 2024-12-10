@@ -5,15 +5,10 @@
     align-items: center;
     justify-content: center;
 
-    .img {
-        width: 60px;
-        height: 60px;
-        background-color: white;
-    }
 
     .siteName {
         background-image: var(--gradient90);
-        font-size: 2.2rem;
+        font-size: 1.7rem;
         color: transparent;
         background-clip: text;
     }

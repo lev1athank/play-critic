@@ -1,5 +1,5 @@
 'use client'
-import Search from './elements/search/Search'
+import Search from './elements/search/search'
 import styles from './style.module.scss'
 const Header = () => {
 

@@ -9,7 +9,8 @@ const Search = () => {
         height={34}
         alt='search'
         style={{
-          marginLeft: "10px"
+          marginLeft: "10px",
+          fill: "var(--dark25)"
       }}
       />
       <input type="text"  className={styles.inputSearch} placeholder='Найти'/>

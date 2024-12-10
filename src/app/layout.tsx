@@ -6,10 +6,11 @@ import Sidebar from "@/UI/sidebar/sidebar";
 
 import { Nunito } from 'next/font/google'
 
-const nunito = Nunito({
+export const nunito = Nunito({
   weight: "400",
   style: 'normal',
   subsets: ['latin'],
+  variable: '--mainFont'
 })
 
 export const metadata: Metadata = {
