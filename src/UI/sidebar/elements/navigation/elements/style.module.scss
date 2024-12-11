@@ -1,10 +1,20 @@
 .navBtn {
-    width: 80%;
-    height: 60px;
-    background: var(--gradient0);
+    width: 70%;
+    height: 50px;
     border-radius: 16px;
     color: white;
     border: none;
-    font-size: 2rem;
+    font-size: 18px;
     font-family: var(--mainFont);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background-color: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    padding-left: 10px;
+
+    &.active {
+        background: var(--gradient0);
+    }
 }
