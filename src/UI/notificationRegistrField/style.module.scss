@@ -1,0 +1,23 @@
+.background {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+
+    .regField {
+        width: 550px;
+        height: 700px;
+        background-color: var(--black);
+        border-radius: 9px;
+        border: 2px solid var(--purple);
+        // border-image: var(--gradient90) 1;
+        // border-width: 2px;
+        // border-style: solid;
+    }
+}
