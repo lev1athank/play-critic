@@ -1,7 +1,7 @@
-
+import styles from "./style.module.scss"
 const UserPage = () => {
   return (
-    <div>UserPage</div>
+    <div className={styles.userLibrary}>UserPage</div>
   )
 }
 

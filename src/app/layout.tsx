@@ -31,7 +31,14 @@ export default function RootLayout({
       <body className={nunito.className}>
         <Header />
         <Sidebar />
-        {children}
+        <div style={{display:"flex", width: "100%", height: "100%"}}>
+          <div style={{
+            width: "300px",
+            height: "100%"
+          }}></div>
+          {children}
+
+        </div>
       </body>
     </html>
   );

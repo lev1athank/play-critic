@@ -5,7 +5,7 @@ import styles from './style.module.scss'
 export function UserField() {
   return (
     <div className={styles.userField}>
-      <span className={styles.inBtn}>Войти</span>
+      {/* <span className={styles.inBtn}>Войти</span> */}
       <span className={styles.regBtn}>Регистрация</span>
       {/* <div className={styles.account}>
         <span className={styles.userName}>leviathan</span>
