@@ -5,7 +5,7 @@ import Header from "@/UI/header/Header";
 import Sidebar from "@/UI/sidebar/sidebar";
 
 import { Nunito } from 'next/font/google'
-import RegField from "@/UI/notificationRegistrField/regField";
+import RegField from "@/UI/notificationRegistrField/RegField";
 
 export const nunito = Nunito({
   weight: "400",
@@ -24,7 +24,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
 
 
   return (

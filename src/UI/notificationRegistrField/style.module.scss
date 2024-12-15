@@ -9,15 +9,92 @@
     left: 0;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 1000;
-
+    
     .regField {
-        width: 550px;
+        width: 500px;
         height: 700px;
-        background-color: var(--black);
+        background-color: var(--gray);
         border-radius: 9px;
         border: 2px solid var(--purple);
+        position: relative;
         // border-image: var(--gradient90) 1;
         // border-width: 2px;
         // border-style: solid;
+
+        .form {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            padding: 40px 30px 0;
+            .titleForm {
+                font-size: 3rem;
+                color: var(--purple);
+            }
+
+            .inputData {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: white;
+                font-size: 1.5rem;
+                width: 100%;
+                height: 60%;
+                gap: 20px;
+                margin-top: 30px;
+                span {
+                    width: 400px;
+
+                    input {
+                        margin-top: 10px;
+                        background-color: var(--black);
+                        width: 400px;
+                        height: 60px;
+                        border-radius: 9px;
+                        outline: none;
+                        border: none;
+                        color: white;
+                        font-size: 1.6rem;
+                        overflow: hidden;
+                        padding: 20px;
+                    }
+                }
+                
+            }
+
+            .btnForm {
+                color: white;
+                width: 200px;
+                height: 60px;
+                border-radius: 9px;
+                outline: none;
+                background-color: var(--purple);
+                display: grid;
+                place-items: center;
+                border: none;
+                font-size: 1.6rem;
+                transition: transform 0.2s ease-in;
+                cursor: pointer;
+
+                &:hover {
+                    transform: scale(1.03);
+                }
+            }
+
+            .swapForm {
+                margin-top: 10px;
+                color: #979797;
+                font-size: 0.9rem;
+
+                transition: color 0.1s ease-in;
+                cursor: pointer;
+
+                &:hover {
+                    color: white;
+                }
+                
+            }
+        }
     }
 }
