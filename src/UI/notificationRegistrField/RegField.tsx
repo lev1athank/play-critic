@@ -1,13 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import styles from "./style.module.scss";
+import { useSelector } from "react-redux";
+import { useTypeSelector } from "@/hooks/useTypeSelector";
+import { useActions } from "@/hooks/useActions";
 const RegField = () => {
 
   const [isForm, setIsForm] = useState(false);
+  const { iSregShow } = useTypeSelector(state=>state.regField)
+  const { setIsRegShow } = useActions()
+  const background = useRef<HTMLDivElement>(null)
+  
 
+  
   return (
-    <div className={styles.background}>
-      <div className={styles.regField}>
+    <div className={styles.background} ref={background} style={!iSregShow ? {display:"none"} : {}} onClick={()=>setIsRegShow(false)}>
+      <div className={styles.regField} onClick={(e) => e.stopPropagation()}>
         <form className={styles.form}>
           <span className={styles.titleForm}>Регистрация</span>
           <div className={styles.inputData}>
@@ -20,8 +28,8 @@ const RegField = () => {
               <input type="password" name="password" />
             </span>
             <span>
-              <label htmlFor="RepitPassword">Повторите пароль</label>
-              <input type="password" name="RepitPassword" />
+              <label htmlFor="repitPassword">Повторите пароль</label>
+              <input type="password" name="repitPassword" />
             </span>
           </div>
           <button type="button" className={styles.btnForm} onSubmit={()=>null}>Создать</button>
