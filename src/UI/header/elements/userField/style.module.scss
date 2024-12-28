@@ -17,6 +17,12 @@
         padding: 10px 20px;
         background-color: var(--purple);
         border-radius: 9px;
+        transition: transform 0.3s ease-out;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.03);
+        }
     }
 }
 

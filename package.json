@@ -10,13 +10,18 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
+    "@types/js-cookie": "^3.0.6",
+    "axios": "^1.7.9",
+    "dto": "^0.0.1",
+    "js-cookie": "^3.0.5",
     "next": "15.0.4",
     "next-redux-wrapper": "^8.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
-    "sass": "^1.82.0"
+    "sass": "^1.82.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/node": "^20",
