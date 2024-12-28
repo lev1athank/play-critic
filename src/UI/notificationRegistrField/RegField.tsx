@@ -1,12 +1,20 @@
 "use client";
-import { useRef, useState, useEffect, ChangeEvent, FormEvent, FormEventHandler } from "react";
+import {
+    useRef,
+    useState,
+    useEffect,
+    ChangeEvent,
+    FormEvent,
+    FormEventHandler,
+} from "react";
 import styles from "./style.module.scss";
 import { useSelector } from "react-redux";
 import { useTypeSelector } from "@/hooks/useTypeSelector";
 import { useActions } from "@/hooks/useActions";
 import z from "zod";
 import axios, { AxiosResponse } from "axios";
-import Cookie from 'js-cookie';
+import Cookie from "js-cookie";
+import Image from "next/image";
 
 const RegField = () => {
     const [typeFormAuth, setTypeFormAuth] = useState<boolean>(true);
@@ -19,7 +27,7 @@ const RegField = () => {
         password: string;
         rePasswoed: string;
     };
-    type Ttokens = {'Access_token': string , 'Refresh_token': string}
+    type Ttokens = { Access_token: string; Refresh_token: string };
     const nullData = {
         login: "",
         password: "",
@@ -37,27 +45,26 @@ const RegField = () => {
         password: z.string().min(6),
     });
 
-    const sendSubmit = async (form:FormEvent) => {
-      
+    const sendSubmit = async (form: FormEvent) => {
         const validation = data.safeParse(dataReg);
-        
-        if(validation.error) return
-        if(dataReg.password !== dataReg.rePasswoed) return
+
+        if (validation.error) return;
+        if (dataReg.password !== dataReg.rePasswoed) return;
 
         try {
-          const res = await axios.post('http://localhost:3452/auth/singup', {
-            ...dataReg
-          })
-          console.log(res.data);
-          
-          const tokens:Ttokens = res.data
-          Cookie.set('AccessToken', tokens.Access_token, { expires: 15 });
-          Cookie.set('RefreshToken', tokens.Refresh_token, { expires: 15 * 24 * 60 });
-        } catch(err) {
-          console.log(err);
-          
-        }
+            const res = await axios.post("http://localhost:3452/auth/singup", {
+                ...dataReg,
+            });
+            console.log(res.data);
 
+            const tokens: Ttokens = res.data;
+            Cookie.set("AccessToken", tokens.Access_token, { expires: 15 });
+            Cookie.set("RefreshToken", tokens.Refresh_token, {
+                expires: 15 * 24 * 60,
+            });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const setData = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +88,21 @@ const RegField = () => {
                 className={styles.regField}
                 onClick={(e) => e.stopPropagation()}
             >
+                <div
+                    className={styles.closeBtn}
+                    onClick={() => {
+                        setIsRegShow(false);
+                        setDataReg(nullData);
+                    }}
+                >
+                    <Image
+                        alt="close"
+                        src={"/close.svg"}
+                        width={46}
+                        height={46}
+                        className={styles.avatar}
+                    />
+                </div>
                 <form className={styles.form}>
                     <span className={styles.titleForm}>
                         {typeFormAuth ? "Регистрация" : "Вход"}
@@ -93,6 +115,8 @@ const RegField = () => {
                                 name="login"
                                 value={dataReg.login}
                                 required={true}
+                                min={1}
+                                max={30}
                                 onChange={(e) => setData(e)}
                             />
                         </span>
@@ -103,19 +127,21 @@ const RegField = () => {
                                 name="password"
                                 value={dataReg.password}
                                 required={true}
+                                min={6}
                                 onChange={(e) => setData(e)}
                             />
                         </span>
                         {typeFormAuth ? (
                             <span>
                                 <label htmlFor="rePasswoed">
-                                Подтвердите пароль
+                                    Подтвердите пароль
                                 </label>
                                 <input
                                     type="password"
                                     name="rePasswoed"
                                     value={dataReg.rePasswoed}
                                     required={true}
+                                    min={6}
                                     onChange={(e) => setData(e)}
                                 />
                             </span>
@@ -128,7 +154,6 @@ const RegField = () => {
                         className={styles.btnForm}
                         onClick={sendSubmit}
                     >
-                        
                         {typeFormAuth ? "Создать" : "Войти"}
                     </button>
                     <span
