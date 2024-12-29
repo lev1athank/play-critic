@@ -8,6 +8,7 @@ import Sidebar from "@/UI/sidebar/sidebar";
 import { Nunito } from "next/font/google";
 import RegField from "@/UI/notificationRegistrField/RegField";
 import { store } from "../store/store";
+import { useActions } from "@/hooks/useActions";
 
 export const nunito = Nunito({
   weight: "400",
@@ -23,6 +24,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const { verifySlice }  = useActions()
+  verifySlice()
   return (
     <html lang="en">
       <body className={nunito.className}>
