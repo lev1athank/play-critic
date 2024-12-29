@@ -2,12 +2,34 @@
 import Image from "next/image";
 import styles from "./style.module.scss";
 import { useTypeSelector } from "@/hooks/useTypeSelector";
-import { useDispatch } from 'react-redux';
 import { useActions } from "@/hooks/useActions";
+import axios from "axios";
+import { useEffect } from "react";
+import Cookie from "js-cookie";
 
-export function UserField() {
+
+export async function UserField() {
   const { iSregShow, iSAuth } = useTypeSelector((state) => state.regField);
   const { setIsRegShow } = useActions()
+
+  const awaitAxios = async (method:string):Promise<void> => {
+    await axios(`http://localhost/auth/${method}`, {
+      headers: {
+        // Authorization: `Bearer ${}` 
+      }
+    })
+  }
+   
+  //TODO
+  useEffect(() => {
+    const accessToken = Cookie.get('AccessToken')
+    if(!accessToken) {
+      const refreshToken = Cookie.get('RefreshToken')
+      if(!refreshToken) return
+      
+    }
+  }, [, iSAuth])
+  
 
   return (
     <div className={styles.userField}>

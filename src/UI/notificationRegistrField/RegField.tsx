@@ -19,7 +19,7 @@ import Image from "next/image";
 const RegField = () => {
     const [typeFormAuth, setTypeFormAuth] = useState<boolean>(true);
     const { iSregShow } = useTypeSelector((state) => state.regField);
-    const { setIsRegShow } = useActions();
+    const { setIsRegShow, setIsAuth } = useActions();
     const background = useRef<HTMLDivElement>(null);
     const [alerts, setAlerts] = useState<string[]>();
 
@@ -71,8 +71,11 @@ const RegField = () => {
             Cookie.set("RefreshToken", tokens.Refresh_token, {
                 expires: 15 * 24 * 60,
             });
+
+            setIsAuth(true)
+            setIsRegShow(false)
         } catch (err) {
-            console.log(err);
+            setAlerts(['ошибка при регистрации'])
         }
     };
 

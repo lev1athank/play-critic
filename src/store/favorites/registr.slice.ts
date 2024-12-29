@@ -16,6 +16,9 @@ const regSlice = createSlice({
   reducers: {
     setIsRegShow: (state, action: PayloadAction<boolean>) => {
         state.iSregShow = action.payload
+    },
+    setIsAuth: (state, action: PayloadAction<boolean>) => {
+        state.iSAuth = action.payload
     }
   },
 });
