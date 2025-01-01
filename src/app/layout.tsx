@@ -8,7 +8,8 @@ import Sidebar from "@/UI/sidebar/sidebar";
 import { Nunito } from "next/font/google";
 import RegField from "@/UI/notificationRegistrField/RegField";
 import { store } from "../store/store";
-import { useActions } from "@/hooks/useActions";
+import { useEffect } from "react";
+import { verifyUser } from "@/store/favorites/registr.slice";
 
 export const nunito = Nunito({
   weight: "400",
@@ -25,8 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const { verifySlice }  = useActions()
-  verifySlice()
+  useEffect(() => {
+    // Проверяем токен при загрузке
+    store.dispatch(verifyUser());
+}, []);
   return (
     <html lang="en">
       <body className={nunito.className}>
@@ -37,7 +40,7 @@ export default function RootLayout({
             <div
               style={{
                 width: "300px",
-                height: "100%",
+                height: "100%", 
               }}
             ></div>
             {children}

@@ -5,14 +5,12 @@ import {
     useEffect,
     ChangeEvent,
     FormEvent,
-    FormEventHandler,
 } from "react";
 import styles from "./style.module.scss";
-import { useSelector } from "react-redux";
 import { useTypeSelector } from "@/hooks/useTypeSelector";
 import { useActions } from "@/hooks/useActions";
-import z, { map } from "zod";
-import axios, { AxiosResponse } from "axios";
+import z from "zod";
+import axios from "axios";
 import Cookie from "js-cookie";
 import Image from "next/image";
 
@@ -21,61 +19,55 @@ const RegField = () => {
     const { iSregShow } = useTypeSelector((state) => state.regField);
     const { setIsRegShow, setIsAuth } = useActions();
     const background = useRef<HTMLDivElement>(null);
-    const [alerts, setAlerts] = useState<string[]>();
+    const [alerts, setAlerts] = useState<string[]>([]);
 
-    type a = {
-        login: string;
-        password: string;
-        rePasswoed: string;
-    };
-    type Ttokens = { Access_token: string; Refresh_token: string };
     const nullData = {
         login: "",
         password: "",
-        rePasswoed: "",
+        rePassword: "",
     };
 
-    const [dataReg, setDataReg] = useState<{
-        login: string;
-        password: string;
-        rePasswoed: string;
-    }>(nullData);
+    const [dataReg, setDataReg] = useState({
+        login: "",
+        password: "",
+        rePassword: "",
+    });
 
     const data = z.object({
-        login: z.string().min(1, {
-            message: 'логин отсутствует'
-        }),
-        password: z.string().min(6, {
-            message: 'пароль должен быть минимум из 6 символов'
-        }),
+        login: z.string().min(1, { message: "логин отсутствует" }),
+        password: z.string().min(6, { message: "пароль должен быть минимум из 6 символов" }),
     });
 
     const sendSubmit = async (form: FormEvent) => {
+        form.preventDefault();
         const validation = data.safeParse(dataReg);
-        setAlerts([])
-        if (validation.error) 
-            setAlerts(validation.error.errors.map((el) => el.message));
-        if (dataReg.password !== dataReg.rePasswoed) 
-            setAlerts((prev) => (prev ? [...prev, 'Пароли не совпадают'] : ['Пароли не совпадают']))
+        const newAlerts: string[] = [];
 
-        if(validation.error || dataReg.password !== dataReg.rePasswoed) return
-        console.log(alerts)
+        if (validation.error) {
+            newAlerts.push(...validation.error.errors.map((el) => el.message));
+        }
+
+        if (dataReg.password !== dataReg.rePassword) {
+            newAlerts.push("Пароли не совпадают");
+        }
+
+        setAlerts(newAlerts);
+
+        if (newAlerts.length > 0) return;
+
         try {
             const res = await axios.post("http://localhost:3452/auth/singup", {
                 ...dataReg,
             });
-            console.log(res.data);
 
-            const tokens: Ttokens = res.data;
+            const tokens = res.data;
             Cookie.set("AccessToken", tokens.Access_token, { expires: 15 });
-            Cookie.set("RefreshToken", tokens.Refresh_token, {
-                expires: 15 * 24 * 60,
-            });
+            Cookie.set("RefreshToken", tokens.Refresh_token, { expires: 15 * 24 * 60 });
 
-            setIsAuth(true)
-            setIsRegShow(false)
-        } catch (err) {
-            setAlerts(['ошибка при регистрации'])
+            setIsAuth(true);
+            setIsRegShow(false);
+        } catch {
+            setAlerts(["Ошибка при регистрации"]);
         }
     };
 
@@ -94,7 +86,7 @@ const RegField = () => {
             onClick={() => {
                 setIsRegShow(false);
                 setDataReg(nullData);
-                setAlerts([])
+                setAlerts([]);
             }}
         >
             <div className={styles.authField}>
@@ -107,7 +99,7 @@ const RegField = () => {
                         onClick={() => {
                             setIsRegShow(false);
                             setDataReg(nullData);
-                            setAlerts([])
+                            setAlerts([]);
                         }}
                     >
                         <Image
@@ -118,7 +110,7 @@ const RegField = () => {
                             className={styles.avatar}
                         />
                     </div>
-                    <form className={styles.form}>
+                    <form className={styles.form} onSubmit={sendSubmit}>
                         <span className={styles.titleForm}>
                             {typeFormAuth ? "Регистрация" : "Вход"}
                         </span>
@@ -129,10 +121,10 @@ const RegField = () => {
                                     type="text"
                                     name="login"
                                     value={dataReg.login}
-                                    required={true}
+                                    required
                                     min={1}
                                     max={30}
-                                    onChange={(e) => setData(e)}
+                                    onChange={setData}
                                 />
                             </span>
                             <span>
@@ -141,34 +133,28 @@ const RegField = () => {
                                     type="password"
                                     name="password"
                                     value={dataReg.password}
-                                    required={true}
+                                    required
                                     min={6}
-                                    onChange={(e) => setData(e)}
+                                    onChange={setData}
                                 />
                             </span>
-                            {typeFormAuth ? (
+                            {typeFormAuth && (
                                 <span>
-                                    <label htmlFor="rePasswoed">
+                                    <label htmlFor="rePassword">
                                         Подтвердите пароль
                                     </label>
                                     <input
                                         type="password"
-                                        name="rePasswoed"
-                                        value={dataReg.rePasswoed}
-                                        required={true}
+                                        name="rePassword"
+                                        value={dataReg.rePassword}
+                                        required
                                         min={6}
-                                        onChange={(e) => setData(e)}
+                                        onChange={setData}
                                     />
                                 </span>
-                            ) : (
-                                <></>
                             )}
                         </div>
-                        <button
-                            type="button"
-                            className={styles.btnForm}
-                            onClick={sendSubmit}
-                        >
+                        <button type="submit" className={styles.btnForm}>
                             {typeFormAuth ? "Создать" : "Войти"}
                         </button>
                         <span
@@ -176,7 +162,7 @@ const RegField = () => {
                             onClick={() => {
                                 setTypeFormAuth((state) => !state);
                                 setDataReg(nullData);
-                                setAlerts([])
+                                setAlerts([]);
                             }}
                         >
                             {typeFormAuth ? "есть аккаунт" : "создать аккаунт"}
@@ -184,13 +170,16 @@ const RegField = () => {
                     </form>
                 </div>
                 <div className={styles.alertField}>
-                    {alerts?.map((alert, index) => (
-                        <span key={index} className={styles.alert} style={{
-                            animationDelay:`${index * 0.2}s`
-                        }}>
-                            {alert}
-                        </span>
-                    ))}
+                    {alerts.length > 0 &&
+                        alerts.map((alert, index) => (
+                            <span
+                                key={index}
+                                className={styles.alert}
+                                style={{ animationDelay: `${index * 0.2}s` }}
+                            >
+                                {alert}
+                            </span>
+                        ))}
                 </div>
             </div>
         </div>

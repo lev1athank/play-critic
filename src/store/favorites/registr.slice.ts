@@ -1,76 +1,87 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import Cookie from "js-cookie"
+// src/store/favorites/registr.slice.ts
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+import Cookie from "js-cookie";
 
-interface regState {
-  iSAuth: boolean
-  iSregShow: boolean,
-  userData: {
-    id: string
-    login: string
-  } | any
+interface UserData {
+    id: string;
+    login: string;
 }
 
-const initialState: regState = {
-  iSAuth: false,
-  iSregShow: false,
-  userData: {}
+interface RegState {
+    iSAuth: boolean;
+    iSregShow: boolean;
+    userData: UserData | any;
 }
 
-const regSlice = createSlice({
-  name: 'regSlice', 
-  initialState,
-  reducers: {
-    setIsRegShow: (state, action: PayloadAction<boolean>) => {
-        state.iSregShow = action.payload
-    },
-    setIsAuth: (state, action: PayloadAction<boolean>) => {
-        state.iSAuth = action.payload
-    },
-    verifySlice: (state) => {
-        const auth = async (): Promise<void> => {
+const initialState: RegState = {
+    iSAuth: false,
+    iSregShow: false,
+    userData: {},
+};
+
+// Thunks
+export const verifyUser = createAsyncThunk(
+    "auth/verifyUser",
+    async (_, { rejectWithValue, fulfillWithValue }) => {
+        try {
             const accessToken = Cookie.get("AccessToken");
             if (!accessToken) {
                 const refreshToken = Cookie.get("RefreshToken");
-                if (!refreshToken) {
-                  state.userData = {}
-                  state.iSAuth = false
-                }
-                try {
-                    const data = await axios.post(
-                        `http://localhost:3452/auth/refresh-token`,
-                        {
-                            "refresh-token": Cookie.get("refreshToken"),
-                        }
-                    );
+                if (!refreshToken)
+                    return rejectWithValue("No tokens available");
 
-                    state.userData = data.data
-                    state.iSAuth = true
-                } catch (err) {
-                  state.userData = {}
-                  state.iSAuth = false
-                }
-            }
-            try {
-                const data = await axios.get(
-                    `http://localhost:3452/auth/verify`,
+                const refreshData = await axios.post(
+                    "http://localhost:3452/auth/refresh-token",
                     {
-                      headers: {
-                        Authorization: `Bearer ${Cookie.get('AccessToken')}`
-                      }
+                        "refresh-token": refreshToken,
                     }
                 );
-                state.userData = data.data
-                state.iSAuth = true
-            } catch (err) {
-              state.userData = {}
-              state.iSAuth = false
+                Cookie.set("AccessToken", refreshData.data.AccessToken);
+                Cookie.set("RefreshToken", refreshData.data.refreshToken);
             }
-        };
-        auth();
+
+            const userData = await axios.get(
+                "http://localhost:3452/auth/verify",
+                {
+                    headers: {
+                        Authorization: `Bearer ${Cookie.get("AccessToken")}`,
+                    },
+                }
+            );
+
+            return fulfillWithValue(userData.data);
+        } catch (err) {
+            const message = (err as Error).message;
+            return rejectWithValue(message || "Authentication failed");
+        }
     }
-    
-  },
+);
+
+// Slice
+const regSlice = createSlice({
+    name: "auth",
+    initialState,
+    reducers: {
+        setIsRegShow: (state, action: PayloadAction<boolean>) => {
+            state.iSregShow = action.payload;
+        },
+        setIsAuth: (state, action: PayloadAction<boolean>) => {
+            state.iSAuth = action.payload;
+        },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(verifyUser.fulfilled, (state, action) => {
+              
+                state.userData = action.payload;
+                state.iSAuth = true;
+            })
+            .addCase(verifyUser.rejected, (state) => {
+                state.userData = {};
+                state.iSAuth = false;
+            });
+    },
 });
 
-export const { actions, reducer } = regSlice
+export const { actions, reducer } = regSlice;

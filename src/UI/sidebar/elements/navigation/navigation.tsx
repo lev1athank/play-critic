@@ -1,48 +1,58 @@
-'use client'
+"use client";
 
-import { btnNavSidebar } from '@/types/TnavBtnSidebat'
-import NavBtnSidebar from './elements/NavBtnSidebar'
-import styles from './style.module.scss'
-import { useState } from 'react'
-
-
-
-const btn:btnNavSidebar[] = [
-    {
-        name: 'Лента',
-        path: '/',
-        icon: 'lenta'
-    },
-    {
-        name: 'Библиотека',
-        path: '/user/leviathan',
-        icon: 'profile'
-    },
-    {
-        name: 'FAQ',
-        path: '/',
-        icon: 'FAQ'
-    }
-]
-
-
-
-
+import { btnNavSidebar } from "@/types/TnavBtnSidebat";
+import NavBtnSidebar from "./elements/NavBtnSidebar";
+import styles from "./style.module.scss";
+import { useEffect, useState } from "react";
+import { useTypeSelector } from "@/hooks/useTypeSelector";
 
 const Navigation = () => {
-    const [activeBtn, setActiveBtn] = useState<number>(1)
-    const clickBtnNav = (id:number) => {
-        setActiveBtn(id)
-    }
+    const [activeBtn, setActiveBtn] = useState<number>(0);
+    const { userData } = useTypeSelector((state) => state.regField);
 
-  return (
-    <div className={styles.navField}>
-        {
-            btn.map((el, i)=><NavBtnSidebar data={el} isActive={i == activeBtn} fan={()=>clickBtnNav(i)} key={i}/>)
-        }
+    const lenta: btnNavSidebar = {
+        name: "Лента",
+        path: "/",
+        icon: "lenta",
+    };
+    const library: btnNavSidebar = {
+        name: "Библиотека",
+        path: "/user/",
+        icon: "profile",
+    };
+    const FAQ: btnNavSidebar = {
+        name: "FAQ",
+        path: "/",
+        icon: "FAQ",
+    };
 
-    </div>
-  )
-}
+    console.log(userData.login);
 
-export default Navigation
+    library.path += userData.login || "";
+
+    const [btnNavBar, setbtnNavBar] = useState<btnNavSidebar[]>([
+        lenta,
+        library,
+        FAQ,
+    ]);
+    const clickBtnNav = (id: number) => {
+        setActiveBtn(id);
+    };
+
+    console.log(btnNavBar);
+
+    return (
+        <div className={styles.navField}>
+            {btnNavBar.map((el, i) => (
+                <NavBtnSidebar
+                    data={el}
+                    isActive={i == activeBtn}
+                    fan={() => clickBtnNav(i)}
+                    key={i}
+                />
+            ))}
+        </div>
+    );
+};
+
+export default Navigation;
