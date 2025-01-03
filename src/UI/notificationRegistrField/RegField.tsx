@@ -61,8 +61,8 @@ const RegField = () => {
             });
 
             const tokens = res.data;
-            Cookie.set("AccessToken", tokens.Access_token, { expires: 15 });
-            Cookie.set("RefreshToken", tokens.Refresh_token, { expires: 15 * 24 * 60 });
+            Cookie.set("AccessToken", tokens.AccessToken, { expires: 15 / (24 * 50)});
+            Cookie.set("RefreshToken", tokens.RefreshToken, { expires: 15 });
 
             setIsAuth(true);
             setIsRegShow(false);

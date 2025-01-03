@@ -3,20 +3,17 @@ import Image from "next/image";
 import styles from "./style.module.scss";
 import { useTypeSelector } from "@/hooks/useTypeSelector";
 import { useActions } from "@/hooks/useActions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 export function UserField() {
     const { iSregShow, iSAuth, userData } = useTypeSelector((state) => state.regField);
     const { setIsRegShow } = useActions();
-    
 
-    useEffect(() => {
-        console.log(userData);
-    }, [userData])
+    console.log(userData, 112);
     
     
     return (
         <div className={styles.userField}>
-            {!iSAuth ? (
+            {!iSAuth && !userData.login ? (
                 <span
                     className={styles.regBtn}
                     onClick={() => setIsRegShow(true)}

@@ -37,8 +37,14 @@ export const verifyUser = createAsyncThunk(
                         "refresh-token": refreshToken,
                     }
                 );
-                Cookie.set("AccessToken", refreshData.data.AccessToken);
-                Cookie.set("RefreshToken", refreshData.data.refreshToken);
+                console.log(refreshData, 11112);
+                
+                Cookie.set("AccessToken", refreshData.data.AccessToken, {
+                    expires: 15 / (24 * 60)
+                });
+                Cookie.set("RefreshToken", refreshData.data.RefreshToken, {
+                    expires: 15
+                });
             }
 
             const userData = await axios.get(

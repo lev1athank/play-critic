@@ -26,9 +26,7 @@ const Navigation = () => {
         icon: "FAQ",
     };
 
-    console.log(userData.login);
 
-    library.path += userData.login || "";
 
     const [btnNavBar, setbtnNavBar] = useState<btnNavSidebar[]>([
         lenta,
@@ -39,7 +37,21 @@ const Navigation = () => {
         setActiveBtn(id);
     };
 
-    console.log(btnNavBar);
+    
+    useEffect(() => {
+        const newLibrary = {
+            ...library,
+            path: `/user/${userData.login || ''}`,
+        };
+    
+        const newBtnNavBar = [
+            lenta,
+            newLibrary,
+            FAQ,
+        ];
+    
+        setbtnNavBar(newBtnNavBar);
+    }, [userData]);
 
     return (
         <div className={styles.navField}>
