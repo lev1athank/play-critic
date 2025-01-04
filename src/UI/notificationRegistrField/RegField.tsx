@@ -10,9 +10,8 @@ import styles from "./style.module.scss";
 import { useTypeSelector } from "@/hooks/useTypeSelector";
 import { useActions } from "@/hooks/useActions";
 import z from "zod";
-import axios from "axios";
-import Cookie from "js-cookie";
 import Image from "next/image";
+import apiClient from "@/tool/axiosClient";
 
 const RegField = () => {
     const [typeFormAuth, setTypeFormAuth] = useState<boolean>(true);
@@ -47,7 +46,7 @@ const RegField = () => {
             newAlerts.push(...validation.error.errors.map((el) => el.message));
         }
 
-        if (dataReg.password !== dataReg.rePassword) {
+        if (typeFormAuth && dataReg.password !== dataReg.rePassword) {
             newAlerts.push("Пароли не совпадают");
         }
 
@@ -56,17 +55,16 @@ const RegField = () => {
         if (newAlerts.length > 0) return;
 
         try {
-            const res = await axios.post("http://localhost:3452/auth/singup", {
-                ...dataReg,
-            });
-
-            const tokens = res.data;
-            Cookie.set("AccessToken", tokens.AccessToken, { expires: 15 / (24 * 50)});
-            Cookie.set("RefreshToken", tokens.RefreshToken, { expires: 15 });
-
+            await apiClient.post(`/auth/${typeFormAuth ? 'singup' : 'login'}`, {
+                ...dataReg
+            })
             setIsAuth(true);
             setIsRegShow(false);
-        } catch {
+            location.reload()
+
+        } catch(err) {
+            console.log(err);
+            
             setAlerts(["Ошибка при регистрации"]);
         }
     };

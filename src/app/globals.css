@@ -7,6 +7,7 @@
     --gray: #20222F;
     --black: #141622;
     --dark25: rgba(0, 0, 0, .25);
+    --dark50: rgba(0, 0, 0, .5);
     --gradient90: linear-gradient(90deg, rgba(103,75,210,1) 0%, rgba(169,97,217,1) 100%);
     --gradient0: linear-gradient(0, rgba(103,75,210,1) 0%, rgba(169,97,217,1) 100%);
     --purple: #9A5CD8;
@@ -18,5 +19,6 @@ body {
     background-color: var(--black);
     display: flex; 
     flex-direction: column;
+    overflow: hidden;
 }
 

@@ -27,17 +27,70 @@
 }
 
 .account {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+    &.active {
+        .userPanel {
+            display: flex;
 
-    .userName {
-        font-size: 24px;
+        }
+        .userData {
+            background-color: var(--dark25);
+
+        }
     }
-    .avatar {
-        width: 64px;
-        height: 64px;
-        border: 1px solid var(--black);
+    
+
+    position: relative;
+    .userData {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 2px 15px;
         border-radius: 9px;
+        transition: background-color 0.2s linear;
+        cursor: pointer;
+        &:hover {
+            background-color: var(--dark25);
+        }
+
+        .userName {
+            font-size: 24px;
+        }
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border: 1px solid var(--black);
+            border-radius: 9px;
+        }
     }
+
+    .userPanel {
+        display: none;
+        position: absolute;
+        margin-top: 15px;
+        background-color: var(--gray);
+        border-radius: 9px;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        padding: 5px;
+        
+        span {
+            display: grid;
+            place-items: center;
+            border-radius: 9px;
+            width: 100%;
+            height: 35px;
+            font-size: 15px;
+            background-color: var(--dark25);
+            cursor: pointer;
+            transition: background-color 0.2s linear;
+
+            &:hover {
+                background-color: var(--dark50);
+            }
+        }
+    }
+
+
 }
