@@ -7,28 +7,34 @@ import { useEffect, useRef, useState } from "react";
 import apiClient from "@/tool/axiosClient";
 
 export function UserField() {
-    const { iSregShow, iSAuth, userData } = useTypeSelector((state) => state.regField);
+    const { iSregShow, iSAuth, userData } = useTypeSelector(
+        (state) => state.regField
+    );
     const { setIsRegShow } = useActions();
-    const account = useRef<HTMLDivElement | null>(null)
+    const account = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-      account.current?.addEventListener('click', (e: MouseEvent)=>{
-        account.current?.classList.toggle(styles.active)
-        e.stopPropagation();
-        
-      })
+        const accountElem = account.current;
 
-      document.addEventListener('click', ()=>{
-        account.current?.classList.remove(styles.active)
-      })
-    })
+        const handleAccountClick = (e: MouseEvent) => {
+            accountElem?.classList.add(styles.active);
+        };
 
-    const exit = (e: React.MouseEvent<HTMLSpanElement>) => {
-        console.log("gGGG");
-        
-        apiClient.get('/auth/logout')
-    }
-    
+        const handleDocumentClick = (e: MouseEvent) => {
+            if (!accountElem?.contains(e.target as Node)) {
+                accountElem?.classList.remove(styles.active);
+            }
+        };
+
+        document.addEventListener("click", handleDocumentClick);
+        accountElem?.addEventListener("click", handleAccountClick);
+
+    });
+
+    const exit = () => {
+        apiClient.get("/auth/logout");
+        location.reload()
+    };
 
     return (
         <div className={styles.userField}>
@@ -55,7 +61,7 @@ export function UserField() {
                     </span>
                     <div className={styles.userPanel}>
                         <span>Настройка</span>
-                        <span onClick={(e) => exit(e)}>Выйти</span>
+                        <span onClick={() => exit()}>Выйти</span>
                     </div>
                 </div>
             )}

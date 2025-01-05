@@ -1,9 +1,10 @@
 import { useActions } from "@/hooks/useActions"
 import styles from "./style.module.scss"
-const UserPageName = () => {
+const UserPage = () => {
+
   return (
     <div className={styles.userLibrary}>UserPage</div>
   )
 }
 
-export default UserPageName
+export default UserPage
