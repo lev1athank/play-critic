@@ -8,7 +8,6 @@ import { useTypeSelector } from "@/hooks/useTypeSelector";
 
 const Navigation = () => {
     const [activeBtn, setActiveBtn] = useState<number>(0);
-    const { userData } = useTypeSelector((state) => state.regField);
 
     const lenta: btnNavSidebar = {
         name: "Лента",
@@ -17,7 +16,7 @@ const Navigation = () => {
     };
     const library: btnNavSidebar = {
         name: "Библиотека",
-        path: "/user/",
+        path: "/user",
         icon: "profile",
     };
     const FAQ: btnNavSidebar = {
@@ -26,7 +25,7 @@ const Navigation = () => {
         icon: "FAQ",
     };
 
-
+    const { userData } = useTypeSelector((state) => state.regField);
 
     const [btnNavBar, setbtnNavBar] = useState<btnNavSidebar[]>([
         lenta,
@@ -37,22 +36,28 @@ const Navigation = () => {
         setActiveBtn(id);
     };
 
-    
     useEffect(() => {
         const newLibrary = {
             ...library,
-            path: `/user/${userData.login || ''}`,
+            path: `/user/${userData.login || ""}`,
         };
-    
-        const newBtnNavBar = [
-            lenta,
-            newLibrary,
-            FAQ,
-        ];
-    
+
+        
+        const newBtnNavBar = [lenta, newLibrary, FAQ];
         setbtnNavBar(newBtnNavBar);
     }, [userData]);
-
+    
+    
+    useEffect(() => {
+        console.log(1231);
+        
+        const url = "/" + location.pathname.split("/")[1];
+        console.log(url);
+        
+        const index = [lenta, library, FAQ].findIndex(({ path }) => path === url);
+        if (index !== -1) setActiveBtn(index);
+    }, []);
+    
     return (
         <div className={styles.navField}>
             {btnNavBar.map((el, i) => (

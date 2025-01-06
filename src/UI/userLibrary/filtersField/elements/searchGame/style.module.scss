@@ -1,0 +1,46 @@
+.searchGame {
+    height: 100%;
+    display: flex;
+    align-items: end;
+    gap: 10px; 
+    width: fit-content;
+    input {
+        width: 300px;
+        background-color: inherit;
+        border: none;
+        border-bottom: 4px solid var(--gray);
+        color: white;
+        font-size: 24px;
+    }
+
+    .btnSearch {
+        border: none;
+        background-color: var(--purple);
+        width: 45px;
+        height: 45px;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+
+        &:hover {
+            background-color: var(--purpleDark);
+        }
+    }
+
+    .btnFilter {
+        margin-left: 15px;
+        height: 45px;
+        background-color: var(--gray);
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        color: white;
+        gap: 8px;
+        font-size: 18px;
+        padding: 10px 15px;
+
+        &:hover {
+            background-color: var(--dark25);
+        }
+    }
+}
