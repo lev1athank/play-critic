@@ -18,7 +18,7 @@ export function UserField() {
         const accountElem = account.current;
 
         const handleAccountClick = (e: MouseEvent) => {
-            accountElem?.classList.add(styles.active);
+            accountElem?.classList.toggle(styles.active);
         };
 
         const handleDocumentClick = (e: MouseEvent) => {

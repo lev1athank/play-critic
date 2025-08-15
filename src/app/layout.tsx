@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AuthChecker />
           <Header />
           <Sidebar />
-          <div style={{ height: "100%", width: "calc(100% - 300px)", marginLeft: "300px" }}>
+          <div style={{ height: "100%", width: "calc(100% - 300px)", marginLeft: "300px", position: "relative" }}>
             {children}
           </div>
           <GamePreview />

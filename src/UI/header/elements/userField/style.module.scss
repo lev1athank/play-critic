@@ -66,6 +66,7 @@
     .userPanel {
         display: none;
         position: absolute;
+        z-index: 999;
         margin-top: 15px;
         background-color: var(--gray);
         border-radius: 9px;

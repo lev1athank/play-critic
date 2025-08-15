@@ -1,5 +1,5 @@
 import { ICard } from '@/types/Card';
-import React from 'react';
+import React, { FC, memo } from 'react';
 import styles from './style.module.scss';
 import { useTypeSelector } from '@/hooks/useTypeSelector';
 import { useActions } from '@/hooks/useActions';
@@ -8,8 +8,9 @@ interface IgameData extends ICard {
   userId: string
 }
 
-const Card = ({ ...data }: IgameData) => {
-
+const Card: FC<IgameData> = memo(({...data})=>{
+  console.log(data.name);
+  
   const totalScore = [data.gameplay, data.immersion, data.originality, data.story].reduce((sum, val) => sum + val, 0);
   const { isPreview } = useTypeSelector(state => state.newGame);
   const { userData } = useTypeSelector(state => state.regField);
@@ -47,6 +48,6 @@ const Card = ({ ...data }: IgameData) => {
       </div>
     </div>
   );
-};
+})
 
 export default Card;

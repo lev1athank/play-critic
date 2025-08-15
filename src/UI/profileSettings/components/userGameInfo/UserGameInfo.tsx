@@ -40,38 +40,8 @@ const UserGameInfo: React.FC<UserGameInfoProps> = ({
                     <h3>Любимые игры</h3>
                 </div>
 
-                {isEditing && (
-                    <div className={styles.searchPanel}>
-                        <button
-                            className={styles.toggleSearchBtn}
-                            onClick={() => setShowGameSearch(!showGameSearch)}
-                            aria-expanded={showGameSearch}
-                            aria-controls="game-search-panel"
-                        >
-                            {showGameSearch ? 'Скрыть поиск' : 'Добавить игру'}
-                        </button>
 
-                        {showGameSearch && (
-                            <div className={styles.searchBox} id="game-search-panel">
-                                <input
-                                    type="text"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Название игры..."
-                                />
-                                <ul className={styles.suggestionsList}>
-                                    {suggestions.map((name, idx) => (
-                                        <li key={idx}>
-                                            <button onClick={() => onAddGame(name)}>
-                                                {name}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        )}
-                    </div>
-                )}
+
 
                 <div className={styles.gamesGridDecor}>
                     {loveGameData.map((game, index) => {
@@ -92,7 +62,6 @@ const UserGameInfo: React.FC<UserGameInfoProps> = ({
                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         loading="lazy"
                                     />
-                  }
                                     {isEditing && (
                                         <button
                                             className={styles.removeGameButtonDecor}
@@ -117,15 +86,36 @@ const UserGameInfo: React.FC<UserGameInfoProps> = ({
                         );
                     })}
 
-                    {isEditing && (
+                    {isEditing && loveGameData.length < 4 && (
                         <button
                             className={styles.addGameButtonDecor}
-                            onClick={() => setShowGameSearch(true)}
+                            onClick={()=>{
+                                () => setShowGameSearch(true)
+                            }}
                             type="button"
                         >
                             <span>+</span>
                             Добавить игру
                         </button>
+                    )}
+                    {showGameSearch && (
+                        <div className={styles.searchBox} id="game-search-panel">
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Название игры..."
+                            />
+                            <ul className={styles.suggestionsList}>
+                                {suggestions.map((name, idx) => (
+                                    <li key={idx}>
+                                        <button onClick={() => onAddGame(name)}>
+                                            {name}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     )}
                 </div>
             </div>
