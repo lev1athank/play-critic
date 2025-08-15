@@ -5,6 +5,7 @@ import { useTypeSelector } from "@/hooks/useTypeSelector";
 import { useActions } from "@/hooks/useActions";
 import { useEffect, useRef, useState } from "react";
 import apiClient from "@/tool/axiosClient";
+import Link from "next/link";
 
 export function UserField() {
     const { iSregShow, iSAuth, userData } = useTypeSelector(
@@ -60,7 +61,7 @@ export function UserField() {
                         />
                     </span>
                     <div className={styles.userPanel}>
-                        <span>Настройка</span>
+                        <Link href={`/profile/${userData.login}`}>профиль</Link>
                         <span onClick={() => exit()}>Выйти</span>
                     </div>
                 </div>

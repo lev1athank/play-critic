@@ -1,0 +1,627 @@
+.scoreFieldGrid {
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.scoreRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.scoreInpBox {
+  height: 70px;
+  display: flex;
+  padding: 6px 8px;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
+  background: var(--gray);
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  position: relative;
+  min-width: 0;
+}
+.sliderWrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.rangeScoreCustom {
+  width: 100%;
+  // height: 62px;
+  height: 90%;
+  position: relative;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  appearance: none;
+  outline: none;
+  transition: background 0.3s;
+}
+.rangeScoreCustom::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 72px;
+  border-radius: 6px;
+  background: transparent;
+  transition: transform 0.2s;
+}
+.rangeScoreCustom:focus::-webkit-slider-thumb,
+.rangeScoreCustom:hover::-webkit-slider-thumb {
+  transform: scale(1.1);
+  border-color: var(--accent-color);
+}
+.rangeScoreCustom::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  border: 2px solid rgba(0,0,0,0.18);
+  transition: transform 0.2s;
+}
+.rangeScoreCustom:focus::-moz-range-thumb,
+.rangeScoreCustom:hover::-moz-range-thumb {
+  transform: scale(1.1);
+  border-color: rgba(0,0,0,0.18);
+}
+.rangeScoreCustom::-ms-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.18);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+  border: 2px solid rgba(0,0,0,0.18);
+  transition: transform 0.2s;
+}
+.rangeScoreCustom:focus::-ms-thumb,
+.rangeScoreCustom:hover::-ms-thumb {
+  transform: scale(1.1);
+  border-color: var(--accent-color);
+}
+.sliderLabel {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #000000;
+  font-size: 18px;
+  font-weight: 500;
+  pointer-events: none;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+}
+.valueScoreCustom {
+
+  // height: 62px;
+  height: 90%;
+  aspect-ratio: 1/1;
+  background: var(--primary-color);
+  color: var(--text-color);
+  font-size: 22px;
+  font-weight: 700;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  transition: background 0.2s, transform 0.2s;
+}
+.valueScoreCustom:hover {
+  background: var(--accent-color);
+  transform: scale(1.08);
+}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+.background {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  z-index: 1000;
+  animation: blackout 0.4s ease-in-out forwards;
+  overflow: hidden;
+
+  @keyframes blackout {
+    from {
+      background-color: transparent;
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
+    }
+  }
+}
+
+.formNewGame {
+  width: 740px;
+  max-height: 90vh;
+  background: var(--black);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  animation: formFadeIn 0.5s ease-in-out both;
+  font-family: 'Roboto', sans-serif;
+  overflow: visible;
+
+  @keyframes formFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(0);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(20px);
+    }
+  }
+
+  .closeButton {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    background-color: var(--gray);
+    border: none;
+    border-radius: 9px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      background-color: var(--accent-color);
+      transform: rotate(90deg);
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    }
+  }
+
+  .gameDataField {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    margin-bottom: 20px;
+
+    .gameImage {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .mainImage {
+        width: 197px;
+        height: 280px;
+        border-radius: 16px;
+        border: 3px solid var(--gray);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background-color: var(--dark25);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        animation: imageFadeIn 0.5s ease-in-out;
+
+        .imageLogo {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .noImage {
+            position: absolute;
+        }
+      }
+
+      @keyframes imageFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    }
+
+    .gameDetails {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      height: 280px;
+
+      .searchGame {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+
+        .searchTitle {
+          color: var(--text-color);
+          font-size: 16px;
+          font-weight: 500;
+          transform: translateX(15px);
+        }
+
+        .search {
+          width: 100%;
+          padding: 14px 18px;
+          height: 50px;
+          background-color: var(--gray);
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          color: var(--text-color);
+          transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+          &:focus {
+            outline: none;
+            background-color: var(--dark25);
+            box-shadow: 0 0 8px rgba(154, 92, 216, 0.3);
+            transform: translateY(-2px);
+          }
+
+          &::placeholder {
+            color: hsl(0, 0%, 60%);
+          }
+        }
+
+        .dropdownList {
+          position: absolute;
+          top: 80px;
+          left: 0;
+          width: 100%;
+          background-color: var(--black);
+          border-radius: 12px;
+          max-height: 300px;
+          overflow-y: auto;
+          z-index: 1001;
+          list-style: none;
+          border: 2px solid rgba(154, 92, 216, 0.3);
+          padding: 0;
+          margin: 0;
+          animation: dropdownFadeIn 0.3s ease-in-out;
+          color: white;
+          overflow: hidden;
+
+
+          @keyframes dropdownFadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        }
+
+        .dropdownItem {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px;
+          cursor: pointer;
+          transition: background-color 0.2s ease, transform 0.2s ease;
+
+          &:hover {
+            background-color: var(--dark25);
+            transform: translateX(5px);
+          }
+        }
+
+        .dropdownImage {
+          height: 50px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+      }
+
+      .recallField {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+
+        .recallTitle {
+          color: var(--text-color);
+          font-size: 16px;
+          font-weight: 500;
+
+          &::after {
+            content: " (не обязательно)";
+            color: hsl(0, 0%, 60%);
+            font-size: 14px;
+          }
+        }
+
+        .recall {
+          width: 100%;
+          height: 150px;
+          padding: 14px 18px;
+          background-color: var(--gray);
+          border: none;
+          border-radius: 12px;
+          resize: none;
+          font-size: 16px;
+          color: var(--text-color);
+          transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+          &:focus {
+            outline: none;
+            background-color: var(--dark25);
+            box-shadow: 0 0 8px rgba(154, 92, 216, 0.3);
+            transform: translateY(-2px);
+          }
+
+          &::placeholder {
+            color: hsl(0, 0%, 60%);
+          }
+        }
+      }
+    }
+  }
+
+  .scoreField {
+    width: 100%;
+    background: var(--gray);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+
+    .scoreInpField {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 10px;
+      border-radius: 12px;
+      transition: background-color 0.2s ease;
+      opacity: 0;
+      animation: fadeInUp 0.3s ease-in-out forwards;
+
+      &:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      &:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      &:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      &:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .name {
+        color: var(--text-color);
+        font-size: 18px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        width: 40%;
+      }
+
+      .rangeScore {
+        flex: 1;
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--primary-color) 50%, var(--text-color) 50%);
+        cursor: pointer;
+        appearance: none;
+
+        &::-webkit-slider-thumb {
+          appearance: none;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--text-color);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+          transition: transform 0.2s ease;
+        }
+
+        &:hover::-webkit-slider-thumb {
+          transform: scale(1.1);
+        }
+
+        &::-moz-range-thumb {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--text-color);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+          border: none;
+          transition: transform 0.2s ease;
+        }
+
+        &:hover::-moz-range-thumb {
+          transform: scale(1.1);
+        }
+
+        &::-ms-thumb {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--text-color);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+          border: none;
+          transition: transform 0.2s ease;
+        }
+
+        &:hover::-ms-thumb {
+          transform: scale(1.1);
+        }
+      }
+
+      .valueScore {
+        width: 52px;
+        height: 52px;
+        background-color: var(--primary-color);
+        color: var(--text-color);
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease, background-color 0.2s ease;
+
+        &:hover {
+          transform: scale(1.1);
+          background-color: var(--accent-color);
+        }
+      }
+    }
+  }
+
+  .saveBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 200px;
+    height: 52px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color);
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(154, 92, 216, 0.4);
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    }
+
+    .count {
+      width: 40px;
+      height: 40px;
+      background-color: var(--dark25);
+      color: var(--text-color);
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      transition: transform 0.2s ease;
+
+      &:hover {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}
+
+
+.adventureField {
+  width: 100%;
+  min-height: 70px;
+  border-radius: 16px;
+  background-color: var(--gray);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+.statusButton {
+  flex: 1;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 2px solid var(--purpleDark);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--purpleDark);
+  }
+
+  &.active {
+    background: var(--gradient90);
+    border-color: transparent;
+    color: #fff;
+  }
+}
+
+
+
+@media (max-width: 768px) {
+  .formNewGame {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .gameDataField {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .gameImage {
+    flex: none;
+    width: 100%;
+    height: 280px;
+
+    .mainImage {
+      width: 100%;
+      height: 280px;
+    }
+  }
+
+  .gameDetails {
+    width: 100%;
+  }
+
+  .scoreField {
+    grid-template-columns: 1fr;
+  }
+
+  .saveBtn {
+    width: 100%;
+  }
+}

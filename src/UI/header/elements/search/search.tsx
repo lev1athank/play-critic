@@ -1,20 +1,90 @@
 'use client'
 import styles from './style.module.scss'
-import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
+import apiClient from '@/tool/axiosClient'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser, faXmark, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { useRouter } from 'next/navigation'
+
 const Search = () => {
+  const [query, setQuery] = useState('')
+  const [results, setResults] = useState<string[]>([])
+  const [showDropdown, setShowDropdown] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (query.trim() === '') {
+        setResults([])
+        setShowDropdown(false)
+        return
+      }
+      try {
+        const response = await apiClient.get(`/api/getAllUsersName?userName=${query}`)
+        setResults(response.data.usersName)
+        setShowDropdown(true)
+      } catch (err) {
+        console.error('Ошибка поиска:', err)
+        setResults([])
+      }
+    }
+
+    const delayDebounce = setTimeout(fetchData, 500)
+    return () => clearTimeout(delayDebounce)
+  }, [query])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleSelect = (name: string) => {
+    setQuery(name)
+    router.push(`/library/${name}`)  
+    setShowDropdown(false)
+  }
+
   return (
-    <div className={styles.search}>
-      <Image 
-        src={'/search.svg'}
-        width={34}
-        height={34}
-        alt='search'
-        style={{
-          marginLeft: "10px",
-          fill: "var(--dark25)"
-      }}
-      />
-      <input type="text"  className={styles.inputSearch} placeholder='Найти'/>
+    <div className={styles.searchContainer} ref={containerRef}>
+      <div className={styles.search}>
+        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon} />
+        <input
+          type="text"
+          className={styles.inputSearch}
+          placeholder="Найти пользователя"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onFocus={() => results.length && setShowDropdown(true)}
+        />
+        {query && (
+          <FontAwesomeIcon
+            icon={faXmark}
+            className={styles.clearIcon}
+            onClick={() => {
+              setQuery('')
+              setResults([])
+              setShowDropdown(false)
+            }}
+          />
+        )}
+      </div>
+
+      {showDropdown && results.length > 0 && (
+        <ul className={styles.dropdown}>
+          {results.map((item, i) => (
+            <li key={i} className={styles.dropdownItem} onClick={() => handleSelect(item)}>
+              <span>{item}</span>
+              <FontAwesomeIcon icon={faUser} />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   )
 }

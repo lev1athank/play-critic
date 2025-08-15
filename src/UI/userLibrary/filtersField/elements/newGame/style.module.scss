@@ -1,12 +1,43 @@
 .btnNewGame {
-    height: 45px;
-    padding: 10px 15px;
-    border-radius: 9px;
-    background-color: var(--purple);
-    transition: background-color 0.2s linear;
-    color: white;
-    font-size: 18px;
-    &:hover {
-        background-color: var(--purpleDark);
-    }
+  height: 50px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 14px;
+  background: var(--gradient90);
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(103, 75, 210, 0.4);
+    filter: brightness(1.05);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: none;
+    filter: brightness(0.95);
+  }
+}
+
+.otherUser {
+  padding: 16px 20px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-color);
+  background: var(--gray);
+  border: 2px solid var(--accent-color);
+  border-radius: 12px;
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(32, 34, 47, 0.95);
+  }
 }

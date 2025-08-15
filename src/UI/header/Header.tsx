@@ -9,19 +9,7 @@ import { useActions } from '@/hooks/useActions'
 const Header = () => {
   const { setUserData, clearUserData } = useActions();
 
-  useEffect(() => {
-    (async () =>{
-      try {
-        const data = await apiClient.get("/auth/verify"); // Токены автоматически обновятся в куках
-        setUserData(data.data)
-        console.log(data.data);
-        
-      } catch (error) {
-        clearUserData()
-      }
-    })()
-    
-}, []);
+
   return (
     
     <header className={styles.header}>

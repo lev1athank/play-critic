@@ -1,24 +1,93 @@
+.searchContainer {
+  position: relative;
+  width: 340px;
+  height: 90px;
+  margin-left: 20%;
+  display: flex;
+  align-items: center;
+}
+
 .search {
-    margin-left: 20%;
-    background-color: var(--black);
-    width: 340px;
-    height: 70%;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
+  background-color: var(--black);
+  height: 70%;
+  width: 100%;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 10px;
+  position: relative;
+}
 
-    .inputSearch {
-        width: 90%;
-        margin: 0 10px;
-        height: 60%;
-        background-color: transparent;
-        border: none;
-        font-size: 1.2em;
-        color: white;
+.link {
+    text-decoration: none;
+}
 
-        &:focus,
-        &:active {
-            outline: none;
-        }
-    }
+.icon {
+  color: var(--icon-color);
+  font-size: 1.8rem;
+}
+
+.clearIcon {
+  color: var(--icon-color);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.2);
+    color: var(--text-color);
+  }
+}
+
+.inputSearch {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  font-size: 1.1em;
+  color: var(--text-color);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: 80%;
+  left: 0;
+  right: 0;
+  background-color: var(--gray);
+  border-radius: 0 0 12px 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 999;
+  margin-top: 6px;
+  padding: 8px 0;
+}
+
+.dropdownItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  margin: 0 10px;
+  color: var(--text-color);
+  background-color: var(--black);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: var(--purpleDark);
+  }
+
+  svg {
+    color: var(--primary-color);
+    margin-left: 10px;
+  }
 }

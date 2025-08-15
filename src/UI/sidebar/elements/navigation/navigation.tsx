@@ -5,6 +5,7 @@ import NavBtnSidebar from "./elements/NavBtnSidebar";
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
 import { useTypeSelector } from "@/hooks/useTypeSelector";
+import { usePathname } from "next/navigation";
 
 const Navigation = () => {
     const [activeBtn, setActiveBtn] = useState<number>(0);
@@ -16,7 +17,7 @@ const Navigation = () => {
     };
     const library: btnNavSidebar = {
         name: "Библиотека",
-        path: "/user",
+        path: "/library",
         icon: "profile",
     };
     const FAQ: btnNavSidebar = {
@@ -39,7 +40,7 @@ const Navigation = () => {
     useEffect(() => {
         const newLibrary = {
             ...library,
-            path: `/user/${userData.login || ""}`,
+            path: `/library/${userData.login || ""}`,
         };
 
         
@@ -48,15 +49,14 @@ const Navigation = () => {
     }, [userData]);
     
     
-    useEffect(() => {
-        console.log(1231);
-        
-        const url = "/" + location.pathname.split("/")[1];
-        console.log(url);
-        
+
+    const pathname = usePathname();
+
+    useEffect(() => {   
+        const url = "/" + pathname.split("/")[1];
         const index = [lenta, library, FAQ].findIndex(({ path }) => path === url);
         if (index !== -1) setActiveBtn(index);
-    }, []);
+    }, [pathname]);
     
     return (
         <div className={styles.navField}>

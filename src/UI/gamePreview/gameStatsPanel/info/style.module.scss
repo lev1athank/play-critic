@@ -1,0 +1,194 @@
+
+
+
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.statsBlock {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+
+  div {
+    flex: 1;
+    background: var(--dark25);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+    }
+
+    span {
+      font-size: 13px;
+      color: #bbb;
+    }
+
+    strong {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-top: 6px;
+    }
+  }
+}
+
+.totalScoreBig {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 28px;
+
+  .circular {
+    width: 110px;
+    height: 110px;
+  }
+
+  .scoreValue {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-color);
+  }
+
+  .totalLabel {
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--accent-color);
+  }
+}
+
+.gridScores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(100px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.scoreCard {
+  background: var(--dark25);
+  border-radius: 14px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInItem 0.5s ease forwards;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.03);
+    background: var(--dark50);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  }
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.4s; }
+
+  .scoreLabel {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 6px;
+    text-align: center;
+  }
+}
+
+.circular {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.circularChart {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.bgPath {
+  fill: none;
+  stroke: #333;
+  stroke-width: 3.8;
+}
+
+.progressPath,
+.progressPathTotal {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 3.8;
+  /* УБИРАЕМ transition чтобы не было конфликта с анимацией из JS */
+  /* transition: stroke-dasharray 0.8s ease; */
+}
+
+.progressPath {
+  fill: none;
+  stroke: var(--primary-color);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  /* transition: stroke-dasharray 0.1s linear; */ /* убрать */
+}
+
+.progressPathTotal {
+  stroke: var(--accent-color);
+  /* transition: stroke-dasharray 0.1s linear; */ /* убрать */
+}
+
+.scoreValue {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.pop {
+  animation: popEffect 0.3s ease;
+}
+
+@keyframes fadeInItem {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes popEffect {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.btnReviews {
+  background: var(--secondary-color);
+  color: #fff;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+
+  &:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+  }
+}
+
+
