@@ -1,71 +1,55 @@
 import apiClient from "@/tool/axiosClient";
+import { SaveUserDataParams } from "@/types/userInfo";
 
-export async function getUserData(userName:string) {
-   console.log(userName);
+export async function getUserData(userName: string): Promise<any> {
    const userInfo = await apiClient.get(`/api/getUserInfo?userName=${userName}`)
-   const games = await apiClient.get(`/api/getUserGames?userName=${userName}`)
-   userInfo.data.games = games.data.games
-   console.log(userInfo, 1231);
-   
-
-   
+   // return new Promise((resolve) => {
+   //    setTimeout(() => {
+   //       resolve(userInfo)
+   //    }, 5000)
+   // })
    return userInfo
 }
 
-export interface SaveUserDataParams {
-   userId: string;
-   descriptionProfile: string;
-   loveGame: string;
-   isCloseProfile: boolean;
-   avatar?: File | string;
-}
+
 
 export async function saveUserData(params: SaveUserDataParams) {
-   console.log(params, 111);
-
    try {
-      // Формируем обычный объект для передачи в JSON body
-      const body: any = {
-         userId: params.userId,
-         descriptionProfile: params.descriptionProfile,
-         loveGame: params.loveGame,
-         isCloseProfile: params.isCloseProfile,
-      };
+      console.log(params);
 
-      // Если есть новый аватар (файл), его нужно загрузить отдельно, иначе передаем строку (url)
+      // Если есть новый аватар (файл), сначала загружаем его
       if (params.avatar instanceof File) {
-         // Обычно аватар загружается отдельно, но если нужно, можно реализовать отдельную загрузку
-         // Здесь просто пропускаем avatar, если это файл
-      } else if (typeof params.avatar === 'string') {
-         body.avatarUrl = params.avatar;
+         // Используем ID пользователя как имя файла
+         const formData = new FormData();
+         formData.append('avatar', params.avatar);
+         formData.append('userId', params.userId); // для формирования имени файла на сервере
+
+         // Загружаем аватар
+         const avatarResponse = await apiClient.post('/api/uploadUserAvatar', formData, {
+            headers: {
+               'Content-Type': 'multipart/form-data',
+            },
+         });
+
+         const response = await apiClient.post('/api/updateUserProfile', params);
+
+         return response;
+      } else {
+         // Если аватар не меняется, просто обновляем остальные данные
+         const response = await apiClient.post('/api/updateUserProfile', {
+            userId: params.userId,
+            userName: params.userName,
+            descriptionProfile: params.descriptionProfile,
+            loveGame: params.loveGame,
+            isCloseProfile: params.isCloseProfile,
+         });
+
+         return response;
       }
-
-      const response = await apiClient.post('/api/updateUserProfile', body);
-
-      return response;
    } catch (error) {
       console.error('Ошибка при сохранении данных пользователя:', error);
       throw error;
    }
 }
 
-// Функция для загрузки аватара отдельно (если нужно)
-export async function uploadAvatar(file: File, userName: string) {
-   try {
-      const formData = new FormData();
-      formData.append('avatar', file);
-      formData.append('userName', userName);
-      
-      const response = await apiClient.post('/api/uploadAvatar', formData, {
-         headers: {
-            'Content-Type': 'multipart/form-data',
-         },
-      });
-      
-      return response.data.avatarUrl;
-   } catch (error) {
-      console.error('Ошибка при загрузке аватара:', error);
-      throw error;
-   }
-}
 

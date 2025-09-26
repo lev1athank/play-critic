@@ -1,22 +1,26 @@
 // src/store/favorites/registr.slice.ts
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { date } from "zod";
 
 
 interface UserData {
-    id: string;
+    _id: string;
     login: string;
+    userName: string;
+    avatar: string;
+    lastAvatarIMG: string | null;
 }
 
 interface RegState {
     iSAuth: boolean;
     iSregShow: boolean;
-    userData: UserData | any;
+    userData: UserData | null;
 }
 
 const initialState: RegState = {
     iSAuth: false,
     iSregShow: false,
-    userData: {},
+    userData: null,
 };
 
 const regSlice = createSlice({
@@ -31,11 +35,17 @@ const regSlice = createSlice({
         },
         setUserData: (state, action: PayloadAction<UserData>) => {
             state.userData = action.payload;
-            state.iSAuth = true
+            state.iSAuth = true;
         },
         clearUserData: (state) => {
-            state.userData = {};
+            state.userData = null;
             state.iSAuth = false
+        },
+        setNewUserData: (state, action: PayloadAction<{ lastAvatarIMG?: string, userName?: string }>) => {
+            state.userData = {
+                ...state.userData,
+                ...action.payload
+            } as UserData;
         },
     },
 });

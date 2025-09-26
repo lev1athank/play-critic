@@ -7,6 +7,7 @@
   color: var(--text-color);
   font-size: 18px;
   font-weight: 600;
+  align-content: center;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 
@@ -23,21 +24,25 @@
   }
 }
 
-.otherUser {
-  padding: 16px 20px;
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--text-color);
-  background: var(--gray);
-  border: 2px solid var(--accent-color);
-  border-radius: 12px;
-  text-align: center;
-  max-width: 500px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(4px);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(32, 34, 47, 0.95);
-  }
+.otherUserContainer {
+  display: flex;
+  gap: 20px;
+  .otherUser {
+    padding: 16px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color);
+    background: var(--gray);
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+  
+    &:hover {
+      background: rgba(32, 34, 47, 0.95);
+    }
+}
 }

@@ -2,8 +2,8 @@
 import styles from './style.module.scss'
 import { useEffect, useRef, useState } from 'react'
 import apiClient from '@/tool/axiosClient'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faXmark, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { FaSearch, FaUser } from "react-icons/fa" 
+import { FaXmark } from "react-icons/fa6";
 import { useRouter } from 'next/navigation'
 
 const Search = () => {
@@ -46,14 +46,14 @@ const Search = () => {
 
   const handleSelect = (name: string) => {
     setQuery(name)
-    router.push(`/library/${name}`)  
+    router.push(`/profile/${name}`)  
     setShowDropdown(false)
   }
 
   return (
     <div className={styles.searchContainer} ref={containerRef}>
       <div className={styles.search}>
-        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.icon} />
+        <FaSearch className={styles.icon} size={'1.8rem'}/>
         <input
           type="text"
           className={styles.inputSearch}
@@ -63,8 +63,7 @@ const Search = () => {
           onFocus={() => results.length && setShowDropdown(true)}
         />
         {query && (
-          <FontAwesomeIcon
-            icon={faXmark}
+          <FaXmark
             className={styles.clearIcon}
             onClick={() => {
               setQuery('')
@@ -80,7 +79,7 @@ const Search = () => {
           {results.map((item, i) => (
             <li key={i} className={styles.dropdownItem} onClick={() => handleSelect(item)}>
               <span>{item}</span>
-              <FontAwesomeIcon icon={faUser} />
+              <FaUser />
             </li>
           ))}
         </ul>

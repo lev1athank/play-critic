@@ -10,6 +10,7 @@ import { useActions } from '@/hooks/useActions';
 import apiClient from '@/tool/axiosClient';
 import { toast } from 'react-toastify';
 import { faSteam } from '@fortawesome/free-brands-svg-icons';
+import Image from 'next/image';
 
 
 
@@ -59,7 +60,7 @@ const GamePreview = () => {
 				<div className={styles.modal}>
 					<button className={styles.closeButton} onClick={() => clearGame(true)}>×</button>
 
-					<img src={`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg`} alt="Game cover" className={styles.cover} />
+					<Image src={`https://steamcdn-a.akamaihd.net/steam/apps/${game.appid}/header.jpg`} width={600} height={300} quality={90} alt="Game cover" className={styles.cover} />
 					<h2 className={styles.title}>
 						<span onClick={() => {
 							navigator.clipboard.writeText(game.name);

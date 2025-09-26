@@ -40,7 +40,7 @@ const Navigation = () => {
     useEffect(() => {
         const newLibrary = {
             ...library,
-            path: `/library/${userData.login || ""}`,
+            path: `/library/${userData?.login || ""}`,
         };
 
         

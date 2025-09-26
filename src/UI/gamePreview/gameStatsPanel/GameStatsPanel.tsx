@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import Info from './info/Info'
 import styles from './style.module.scss'

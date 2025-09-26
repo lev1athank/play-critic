@@ -2,11 +2,15 @@
 import Image from "next/image";
 import styles from "./style.module.scss";
 import { useActions } from "@/hooks/useActions";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { useClickOutside } from "@/hooks/useClickOutside";
 
 const SearchGame = () => {
     const { filtersGameSlice } = useActions();
+
     const [showFilters, setShowFilters] = useState(false);
+
+    // локальные фильтры
     const [filters, setFilters] = useState({
         story: 1,
         gameplay: 1,
@@ -14,40 +18,45 @@ const SearchGame = () => {
         immersion: 1,
     });
 
+    // локальный стейт для поиска
+    const [searchText, setSearchText] = useState("");
+
+
     const ref = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (ref.current && !ref.current.contains(event.target as Node)) {
-                setShowFilters(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+    useClickOutside(ref, () => setShowFilters(false));
 
+
+
+    // диспатчим изменения фильтров
+    useEffect(() => {
+        filtersGameSlice(filters);
+    }, [filters, filtersGameSlice]);
+
+    // диспатчим изменения текста поиска
+    useEffect(() => {
+        filtersGameSlice({ nameGame: searchText });
+    }, [searchText, filtersGameSlice]);
+
+    // обработчики
     const handleSliderChange = (key: keyof typeof filters, value: number) => {
-        setFilters((prev) => {
-            const updated = { ...prev, [key]: value };
-            filtersGameSlice(updated);
-            return updated;
-        });
+        setFilters((prev) => ({ ...prev, [key]: value }));
     };
 
     const resetFilter = (key: keyof typeof filters) => {
-        setFilters((prev) => {
-            const updated = { ...prev, [key]: 1 };
-            filtersGameSlice(updated);
-            return updated;
-        });
+        setFilters((prev) => ({ ...prev, [key]: 1 }));
     };
 
-    const labels = {
-        story: "Сюжет",
-        gameplay: "Геймплей",
-        originality: "Оригинальность",
-        immersion: "Погружение",
-    };
+    // подписи
+    const labels = useMemo(
+        () => ({
+            story: "Сюжет",
+            gameplay: "Геймплей",
+            originality: "Оригинальность",
+            immersion: "Погружение",
+        }),
+        []
+    );
 
     const activeFilters = Object.entries(filters).filter(([, val]) => val > 1);
 
@@ -57,8 +66,10 @@ const SearchGame = () => {
                 <input
                     type="text"
                     placeholder="Найти игру"
-                    onChange={(el) => filtersGameSlice({ nameGame: el.target.value })}
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
                 />
+
                 <div className={styles.activeFilters}>
                     {activeFilters.map(([key, val]) => (
                         <div
@@ -86,7 +97,6 @@ const SearchGame = () => {
                 {showFilters && (
                     <div className={styles.filterPopup}>
                         {Object.entries(filters).map(([key, value]) => {
-                            // Вычисляем % заполнения для заливки трека
                             const percent = ((value - 1) / 9) * 100;
                             return (
                                 <div className={styles.sliderWrapper} key={key}>

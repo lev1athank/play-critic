@@ -1,45 +1,61 @@
 "use client";
-import Image from "next/image";
 import styles from "./style.module.scss";
 import { useTypeSelector } from "@/hooks/useTypeSelector";
 import { useActions } from "@/hooks/useActions";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useCallback, useState, use } from "react";
 import apiClient from "@/tool/axiosClient";
 import Link from "next/link";
+import Image from "next/image";
 
 export function UserField() {
-    const { iSregShow, iSAuth, userData } = useTypeSelector(
+    const { userData } = useTypeSelector(
         (state) => state.regField
     );
+
+    
     const { setIsRegShow } = useActions();
-    const account = useRef<HTMLDivElement | null>(null);
+    const menu = useRef<HTMLDivElement>(null)
+    const [imgUrl, setImgUrl] = useState<string>('')
 
-    useEffect(() => {
-        const accountElem = account.current;
+    const toggleMenu = useCallback(() => {
+        const menuState = menu?.current?.classList.toggle(styles.active);
 
-        const handleAccountClick = (e: MouseEvent) => {
-            accountElem?.classList.toggle(styles.active);
-        };
+        if (menuState) {
+            const handleClick = (el: MouseEvent) => {
+                if (menu.current && !menu.current.contains(el.target as Node)) {
+                    menu.current.classList.remove(styles.active);
+                    document.removeEventListener("click", handleClick);
+                }
+            };
 
-        const handleDocumentClick = (e: MouseEvent) => {
-            if (!accountElem?.contains(e.target as Node)) {
-                accountElem?.classList.remove(styles.active);
-            }
-        };
+            document.addEventListener("click", handleClick);
+        }
+    }, [menu]);
 
-        document.addEventListener("click", handleDocumentClick);
-        accountElem?.addEventListener("click", handleAccountClick);
-
-    });
 
     const exit = () => {
         apiClient.get("/auth/logout");
         location.reload()
     };
 
+    const fetchAvatar = useCallback(async () => {
+        if (userData?.lastAvatarIMG)
+            return setImgUrl(userData.lastAvatarIMG);
+
+        if (userData?._id === undefined) {
+            return;
+        }
+
+
+    }, [userData?._id, userData?.lastAvatarIMG]);
+
+    useEffect(() => {
+        fetchAvatar();
+    }, [fetchAvatar]);
+
     return (
         <div className={styles.userField}>
-            {!iSAuth && !userData.login ? (
+            {userData === null ? (
                 <span
                     className={styles.regBtn}
                     onClick={() => setIsRegShow(true)}
@@ -47,18 +63,38 @@ export function UserField() {
                     Регистрация
                 </span>
             ) : (
-                <div className={styles.account} ref={account}>
+                <div className={styles.account} ref={menu} onClick={toggleMenu}>
                     <span className={styles.userData}>
-                        <span className={styles.userName}>
-                            {userData.login}
-                        </span>
-                        <Image
+                        <div className={styles.fieldUserName}>
+                            <span className={styles.userName}>
+                                {userData.userName}
+                            </span>
+                            <span className={styles.login}>
+                                {userData.login}
+                            </span>
+                        </div>
+                        {userData.avatar ? (<Image
                             alt="avatar"
-                            src={"/logo.svg"}
+                            src={`http://localhost:3452/img/uploads/avatar_${userData._id}`}
                             width={64}
                             height={64}
+                            quality={75}
+                            placeholder={'blur'}
+                            blurDataURL={`http://localhost:3452/img/uploads/avatar_${userData._id}?w=10&h=10&q=10`}
                             className={styles.avatar}
-                        />
+                        />) : (
+                            <div className={styles.avatarPlaceholder}>
+                                {(() => {
+                                    const words = userData.login.trim().split(" ");
+                                    if (words.length === 1) {
+                                        const name = words[0];
+                                        return (name[0] + name[name.length - 1]).toUpperCase();
+                                    } else {
+                                        return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+                                    }
+                                })()}
+                            </div>
+                        )}
                     </span>
                     <div className={styles.userPanel}>
                         <Link href={`/profile/${userData.login}`}>профиль</Link>

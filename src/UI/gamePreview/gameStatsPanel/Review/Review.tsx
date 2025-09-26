@@ -4,11 +4,30 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './style.module.scss';
 import Link from 'next/link';
 import { useActions } from '@/hooks/useActions';
+import Image from 'next/image';
 
-interface ReviewData extends ICard {
-  avatarUrl?: string;
+interface UserID {
+  login: string;
   userName: string;
+  avatar: string;
+  profileId: string;
+  userGamesId: string[];
 }
+
+interface ReviewData {
+  userId: UserID;
+  appid: number;
+  name: string;
+  story: number;
+  gameplay: number;
+  originality: number;
+  immersion: number;
+  description: string;
+  status: string;
+  createdAt: Date;
+}
+
+
 
 const ExpandableDescription = ({ text }: { text: string }) => {
   const [expanded, setExpanded] = useState(false);
@@ -97,7 +116,7 @@ const Review = ({ appid, toggleReviewWindow }: ReviewProps) => {
     return `${clean[0].toUpperCase()}${clean[clean.length - 1].toUpperCase()}`;
   };
 
-  return (
+  return reviews && (
     <div className={styles.reviewWrapper}>
       <div className={styles.headerBar}>
         <div className={styles.title}>Отзывы пользователей</div>
@@ -119,17 +138,17 @@ const Review = ({ appid, toggleReviewWindow }: ReviewProps) => {
 
         {reviews.map((r, i) => (
           <div key={i} className={styles.reviewCard}>
-            <Link className={styles.topRow} href={`/profile/${r.userName}`} onClick={() => clearGame(true)}>
+            <Link className={styles.topRow} href={`/profile/${r.userId.login}`} onClick={() => clearGame(true)}>
               <div className={styles.avatar}>
-                {r.avatarUrl ? (
-                  <img src={r.avatarUrl} alt={r.userName} />
+                {r.userId.avatar ? (
+                  <Image src={`http://localhost:3452/img/uploads/${r.userId.avatar}`} width={56} height={56} placeholder={'blur'} blurDataURL={`http://localhost:3452/img/uploads/avatar_${r.userId.avatar}?w=10&h=10&q=10`} alt={r.userId.userName} />
                 ) : (
-                  <div className={styles.initials}>{getInitials(r.userName)}</div>
+                  <div className={styles.initials}>{getInitials(r.userId.userName)}</div>
                 )}
               </div>
               <div className={styles.headerAndScores}>
                 <div className={styles.header}>
-                  <span className={styles.username}>{r.userName}</span>
+                  <span className={styles.username}>{r.userId.userName}</span>
                   <span className={styles.date}>
                     {new Date(r.createdAt).toLocaleDateString()}
                   </span>

@@ -187,3 +187,7 @@ button {
   transition: background-color 0.2s linear;
   cursor: pointer;
 }
+
+a {
+  text-decoration: none;
+}

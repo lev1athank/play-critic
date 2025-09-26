@@ -3,36 +3,37 @@ import React, { FC, memo } from 'react';
 import styles from './style.module.scss';
 import { useTypeSelector } from '@/hooks/useTypeSelector';
 import { useActions } from '@/hooks/useActions';
+import Image from 'next/image';
 
 interface IgameData extends ICard {
   userId: string
 }
 
-const Card: FC<IgameData> = memo(({...data})=>{
-  console.log(data.name);
-  
+const Card: FC<IgameData> = memo(({ ...data }) => {
   const totalScore = [data.gameplay, data.immersion, data.originality, data.story].reduce((sum, val) => sum + val, 0);
-  const { isPreview } = useTypeSelector(state => state.newGame);
   const { userData } = useTypeSelector(state => state.regField);
   const { toggleIsPreview, setGame } = useActions()
-  
+
   const setViewGame = () => {
     setGame({
       game: data,
-      isUser: userData.id == data.userId
+      isUser: userData?._id == data.userId
     })
     toggleIsPreview(true)
   }
-  
-  
+
+
   return (
     <div className={styles.card} onClick={setViewGame}>
       <div className={styles.imageContainer}>
-        <img
+        <Image
           src={`https://steamcdn-a.akamaihd.net/steam/apps/${data.appid}/header.jpg`}
 
           alt={data.name}
           className={styles.image}
+          loading="lazy"
+          fill               // картинка занимает весь контейнер
+          style={{ objectFit: "cover" }}
         />
         <div className={styles.scoreBadge}>
           <div className={styles.mainScore}>{totalScore}</div>

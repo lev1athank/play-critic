@@ -1,91 +1,104 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Image from 'next/image';
-
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './style.module.scss';
-import { useActions } from '@/hooks/useActions';
-import { useTypeSelector } from '@/hooks/useTypeSelector';
 import { ICard } from '@/types/Card';
 import { getUserData, saveUserData } from './getUserData';
 import UserInfo from './components/userInfo/UserInfo';
-import UserGameInfo from './components/userGameInfo/UserGameInfo';
 import LoadingAnimation from '../Loading/Loading';
-
-const MAX_GAMES = 4;
-
-export interface UserProfileData {
-  userInfo: {
-    _id: string;
-    userId: string;
-    descriptionProfile: string;
-    loveGame: string; // Список appid через запятую
-    avatar: string;
-    isCloseProfile: boolean;
-    __v: number;
-  };
-  games: ICard[];
-}
-
+import UserGameInfo from './components/userGameInfo/UserGameInfo';
+import { useActions } from '@/hooks/useActions';
+import { SaveUserDataParams, TUserInfo } from '@/types/userInfo';
 
 export default function ProfileSettings() {
+    const { setNewUserData } = useActions();
     const pathname = usePathname();
-    const router = useRouter();
     const userName = useMemo(() => pathname.split('/')[2] || '', [pathname]);
-    const [userData, setUserData] = useState<UserProfileData>()
-    const stateIsEdit = useState<Boolean>(false)
-    
-    
-    useEffect(()=>{
-        const reqData = async () => {
-            const gUserData = await getUserData(userName)
-            console.log(gUserData);
-            
-            setUserData(gUserData.data)
+
+    const [userData, setUserData] = useState<TUserInfo>();
+    const [editedUserData, setEditedUserData] = useState<TUserInfo>({} as TUserInfo);
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                if (!userName)
+                    return console.log('User not found');
+                    
+                const response = await getUserData(userName);
+                console.log(response.data, 123);
+                
+                setUserData(response.data);
+                setEditedUserData(response.data);
+            } catch (error) {
+                console.error('Failed to fetch user data:', error);
+            }
+        };
+        if (userName) fetchUserData();
+    }, [userName]);
+
+    const saveUser = useCallback(async () => {
+        if (!editedUserData) return;
+
+        try {
+            const payload:SaveUserDataParams = {
+                userId: editedUserData._id,
+                userName: editedUserData.userName,
+                descriptionProfile: editedUserData.profileId.descriptionProfile || '',
+                isCloseProfile: editedUserData.profileId.isCloseProfile ?? userData?.profileId.isCloseProfile ?? false,
+                loveGame: editedUserData.profileId.loveGame || userData?.profileId.loveGame || [],
+                avatar: editedUserData._avatarFile
+            };
+
+            await saveUserData(payload);
+
+            // Обновляем глобальный стейт и локальный
+            setNewUserData({
+                userName: editedUserData.userName,
+                lastAvatarIMG: editedUserData._avatarFile ? URL.createObjectURL(editedUserData._avatarFile) : undefined
+            });
+
+            setUserData(editedUserData);
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Error saving user data:', error);
         }
-        reqData()
-    },[pathname])
+    }, [editedUserData, setNewUserData, userData]);
 
-    
-    const saveUser = useCallback(()=>{
-        if(!userData?.userInfo) return
-        const userInfo = userData.userInfo
-        saveUserData({
-            descriptionProfile: userInfo.descriptionProfile,
-            isCloseProfile: userInfo.isCloseProfile,
-            loveGame: userInfo.loveGame,
-            userId: userInfo.userId
-        })
-    }, [userData])
-
-
-    // const suggestions = useMemo(() => {
-    //     if (!searchQuery.trim() || !userGames) return [];
-    //     return userGames
-    //         .filter(g => g.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    //         .slice(0, 3)
-    //         .map(g => g.name);
-    // }, [searchQuery, userGames]);
+    if (!userData || !editedUserData) {
+        return (
+            <div className={styles.userSetting}>
+                <div className={styles.splitWrapper}>
+                    <LoadingAnimation />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.userSetting}>
             <div className={styles.splitWrapper}>
-                {/* <UserInfo
-
-                />
-                <UserGameInfo
-
-                /> */}
-                {
-                    userData ? (
-                        <>
-                        <UserInfo stateIsEditing={stateIsEdit} userData={{userInfo: userData, setUserInfo: setUserData}}/>
-                        </>
-                    ) : (
-                        <LoadingAnimation />
-                    )
-                }
+                {userData && editedUserData ? (
+                    <>
+                        <UserInfo
+                            isEditing={isEditing}
+                            setIsEditing={setIsEditing}
+                            userData={userData}
+                            editedUserData={editedUserData}
+                            setEditedUserData={setEditedUserData}
+                            onSave={saveUser}
+                        />
+                        <UserGameInfo
+                            isEditing={isEditing}
+                            editedUserData={editedUserData}
+                            setEditedUserData={setEditedUserData}
+                            userInfo={userData}
+                        />
+                    </>
+                ) : (
+                    <LoadingAnimation />
+                )}
             </div>
         </div>
     );

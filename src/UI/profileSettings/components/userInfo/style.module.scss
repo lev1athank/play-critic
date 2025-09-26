@@ -1,5 +1,6 @@
 .userInfo {
   background: transparent;
+  position: relative;
   color: var(--text-color);
   display: flex;
   flex-direction: column;
@@ -7,6 +8,7 @@
   border-radius: 0;
   box-shadow: none;
   width: 100%;
+  height: 100%;
   max-width: 520px;
   border: none;
   flex: 1 1 42%;
@@ -27,17 +29,55 @@
   cursor: pointer;
   width: 150px;
   aspect-ratio: 1/1;
+}
 
-  img {
-    width: 100%;
-    aspect-ratio: 1/1;
-    border-radius: 18px;
-    object-fit: cover;
-    border: 1.5px solid #a084f320;
-    box-shadow: 0 3px 12px #a084f315;
+.avatarUpload {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+
+  &:hover .uploadOverlay {
+    opacity: 1;
+  }
+}
+
+.uploadOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 18px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  color: white;
+
+  svg {
+    width: 32px;
+    height: 32px;
   }
 
-  .placeholderAvatar {
+  span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
+
+.avatar {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 1.5px solid #a084f320;
+  box-shadow: 0 3px 12px #a084f315;
+}
+
+.placeholderAvatar {
     width: 100%;
     aspect-ratio: 1/1;
     border-radius: 18px;
@@ -52,7 +92,7 @@
     box-shadow: 0 3px 12px #a084f315;
   }
 
-}
+
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -74,7 +114,6 @@
   gap: 8px;
 
   h2 {
-    position: absolute;
     margin: 0;
     font-size: 26px;
     font-weight: 800;
@@ -83,35 +122,144 @@
   }
 }
 
+.profileActions {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+}
+
+.libraryBtn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--gradient90);
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.privacyToggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 12px;
+  background: #a084f310;
+  border-radius: 8px;
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+
+      &:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+      }
+    }
+
+    input:checked + .slider {
+      background: var(--gradient90);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+  }
+}
+
+.privateIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  color: #888;
+  font-size: 14px;
+
+  svg {
+    opacity: 0.8;
+  }
+}
+
 .actionsRow {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
   display: flex;
   gap: 8px;
 }
 
-.libraryBtn {
-  margin-top: 40px;
-  background: linear-gradient(135deg, #a084f3 0%, #7a5fd6 100%);
-  color: #fff;
-  width: 130px;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.18s, box-shadow 0.18s;
-  box-shadow: 0 4px 12px rgba(160, 132, 243, 0.28);
-  outline: none;
+.editButtons {
+  display: flex;
+  width: 100%;
+  gap: 8px;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(160, 132, 243, 0.35);
+  button {
+    padding: 8px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s;
+    font-weight: 500;
+
+    &:first-child {
+      background: linear-gradient(135deg, #a084f3 0%, #7a5fd6 100%);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(160, 132, 243, 0.28);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(160, 132, 243, 0.35);
+      }
+    }
   }
 }
 
-.editBtnGhost {
+.cancelBtn {
   background: transparent;
   color: #a084f3;
   border: 1.5px solid #a084f3;
-  padding: 8px 12px;
+  
+  &:hover {
+    background: #a084f310;
+    transform: translateY(-2px);
+  }
+}
+
+.editBtn {
+  background: transparent;
+  color: #a084f3;
+  border: 1.5px solid #a084f3;
+  padding: 8px 14px;
   border-radius: 12px;
   cursor: pointer;
   transition: background 0.18s, color 0.18s, transform 0.18s;
@@ -119,6 +267,23 @@
   &:hover {
     background: #a084f310;
     transform: translateY(-2px);
+  }
+}
+
+.usernameInput {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(160, 132, 243, 0.22);
+  border-radius: 14px;
+  padding: 8px 12px;
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: 700;
+  width: 100%;
+  outline: none;
+
+  &:focus {
+    border-color: #a084f3;
+    box-shadow: 0 0 0 4px #a084f315;
   }
 }
 
@@ -180,12 +345,17 @@
   }
 
   p {
-    margin: 0;
+    margin-top: 5px;
     padding: 12px 14px;
     background: rgba(255, 255, 255, 0.06);
     border-left: 3px solid var(--purple);
     border-radius: 14px;
     box-shadow: 0 2px 10px rgba(160, 132, 243, 0.10);
+  }
+
+  .label {
+    font-size: 1.4rem;
+    margin-left: 15px;
   }
 }
 

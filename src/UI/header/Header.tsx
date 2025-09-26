@@ -7,9 +7,6 @@ import { useEffect } from 'react'
 import apiClient from '@/tool/axiosClient'
 import { useActions } from '@/hooks/useActions'
 const Header = () => {
-  const { setUserData, clearUserData } = useActions();
-
-
   return (
     
     <header className={styles.header}>

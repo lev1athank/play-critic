@@ -1,10 +1,9 @@
 .scoreFieldGrid {
-  width: 100%;
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, auto);
   gap: 18px;
   margin-bottom: 32px;
+  width: 100%;
 }
 .scoreRow {
   display: grid;
@@ -59,7 +58,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.18);
+  background: rgba(255, 255, 255, 0.18);
   box-shadow: 0 3px 8px rgba(0,0,0,0.18);
   border: 2px solid rgba(0,0,0,0.18);
   transition: transform 0.2s;
@@ -96,6 +95,11 @@
   text-shadow: 0 2px 8px rgba(0,0,0,0.18);
   display: flex;
   align-items: center;
+
+  svg {
+    margin-right: 8px;
+    color: var(--gray);
+  }
 }
 .valueScoreCustom {
 
@@ -109,7 +113,7 @@
   border-radius: 16px;
   display: grid;
   place-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18); 
   transition: background 0.2s, transform 0.2s;
 }
 .valueScoreCustom:hover {

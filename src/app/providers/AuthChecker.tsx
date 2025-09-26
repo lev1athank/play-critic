@@ -12,7 +12,7 @@ const AuthChecker = () => {
       try {
         const { data } = await apiClient.get('/auth/verify');
         setUserData(data);
-        console.log('[AuthChecker] Авторизован:', data);
+        console.log('[AuthChecker] Авторизован:', data.login, data.userName);
       } catch (error) {
         clearUserData();
         console.log('[AuthChecker] Не авторизован');

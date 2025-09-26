@@ -5,15 +5,24 @@ import { store } from "../store/store";
 
 import Header from "@/UI/header/Header";
 import Sidebar from "@/UI/sidebar/sidebar";
-import RegField from "@/UI/notificationRegistrField/RegField";
 
 import "./globals.css";
 import { Nunito } from "next/font/google";
+import dynamic from "next/dynamic";
 import AuthChecker from "./providers/AuthChecker";
-import { ToastContainer } from "react-toastify";
-import ProfileSettings from "@/UI/profileSettings/ProfileSettings";
-import GamePreview from "@/UI/gamePreview/GamePreview";
-import FormNewGame from "@/UI/formNewGame/FormNewGame";
+
+const GamePreview = dynamic(() => import("@/UI/gamePreview/GamePreview"), {
+  ssr: false,
+});
+const FormNewGame = dynamic(() => import("@/UI/formNewGame/FormNewGame"), {
+  ssr: false,
+});
+const RegField = dynamic(() => import("@/UI/notificationRegistrField/RegField"), {
+  ssr: false,
+});
+const ToastContainer = dynamic(() => import("react-toastify").then((mod) => mod.ToastContainer), 
+  { ssr: false, loading: () => null }
+);
 
 export const nunito = Nunito({
   weight: "400",
@@ -36,7 +45,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GamePreview />
           <FormNewGame />
           <RegField />
-          {/* <ProfileSettings /> */}
           <ToastContainer />
 
         </Provider>

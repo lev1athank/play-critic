@@ -13,6 +13,7 @@
         background-color: var(--black);
         border-radius: 9px;
     }
+
     .regBtn {
         padding: 10px 20px;
         background-color: var(--purple);
@@ -32,14 +33,16 @@
             display: flex;
 
         }
+
         .userData {
             background-color: var(--dark25);
 
         }
     }
-    
+
 
     position: relative;
+
     .userData {
         display: flex;
         align-items: center;
@@ -48,18 +51,45 @@
         border-radius: 9px;
         transition: background-color 0.2s linear;
         cursor: pointer;
+
         &:hover {
             background-color: var(--dark25);
         }
 
-        .userName {
-            font-size: 24px;
+        .fieldUserName {
+            display: flex;
+            flex-direction: column;
+            .userName {
+                font-size: 24px;
+            }
+
+            .login {
+                font-size: 20px;
+                color: rgba(158, 158, 158, 1);
+                text-align: right;
+            }
         }
+
+
         .avatar {
-            width: 64px;
-            height: 64px;
+            width: 64px;    
+            object-fit: cover;
+            aspect-ratio: 1/1;
             border: 1px solid var(--black);
             border-radius: 9px;
+        }
+
+        .avatarPlaceholder {
+            width: 64px;
+            height: 64px;
+            border-radius: 9px;
+            background-color: var(--purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
         }
     }
 
@@ -75,8 +105,9 @@
         align-items: center;
         gap: 2px;
         padding: 5px;
-        
-        span {
+
+        span,
+        a {
             display: grid;
             place-items: center;
             border-radius: 9px;
@@ -86,6 +117,8 @@
             background-color: var(--dark25);
             cursor: pointer;
             transition: background-color 0.2s linear;
+            text-decoration: none;
+            color: white;
 
             &:hover {
                 background-color: var(--dark50);

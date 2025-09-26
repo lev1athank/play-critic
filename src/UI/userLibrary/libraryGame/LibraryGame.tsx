@@ -7,26 +7,19 @@ import { ICard } from '@/types/Card';
 import Card from '../elements/Card/Card';
 import LoadingAnimation from '@/UI/Loading/Loading';
 import apiClient from '@/tool/axiosClient';
-import GamePreview from '../../gamePreview/GamePreview';
-import { toast } from 'react-toastify';
 import { useActions } from '@/hooks/useActions';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackward, faCaretLeft, faCaretRight, faForward, faForwardFast } from '@fortawesome/free-solid-svg-icons';
+import { FaCaretRight, FaBackward, FaForward, FaCaretLeft  } from "react-icons/fa";
 import { usePathname } from 'next/navigation';
 
 
 const LibraryGame = () => {
   const filter = useTypeSelector(state => state.search);
-  const { game, isEditOrAdd, isPreview, gamesLibrary } = useTypeSelector(state => state.newGame);
-  const { userData } = useTypeSelector(state => state.regField);
+  const { game, gamesLibrary } = useTypeSelector(state => state.newGame);
   const { updateLibrary, clearLibrary } = useActions()
 
   const [isLoading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0);
-  const [gameLibrariFilter, setGameLibrary] = useState<ICard[] | []>([]);
 
-  const [isShowGame, setIsShowGame] = useState<boolean>(false);
-  const [activeShowGame, setActiveShowGame] = useState<ICard | undefined>(undefined);
   const pathname = usePathname();
   useEffect(() => {
     const userName = pathname.split('/')[2];
@@ -112,13 +105,11 @@ const LibraryGame = () => {
       </div>
 
       <div className={styles.pageController}>
-        <FontAwesomeIcon
-          icon={faBackward}
+        <FaBackward 
           className={`${styles.array} ${styles.controlIcon}`}
           onClick={toFirstPage}
         />
-        <FontAwesomeIcon
-          icon={faCaretLeft}
+        <FaCaretLeft 
           className={`${styles.array} ${styles.controlIcon}`}
           onClick={toPrevPage}
         />
@@ -134,13 +125,11 @@ const LibraryGame = () => {
           />
           <span>/ {totalPages}</span>
         </div>
-        <FontAwesomeIcon
-          icon={faCaretRight}
+        <FaCaretRight 
           className={`${styles.array} ${styles.controlIcon}`}
           onClick={toNextPage}
         />
-        <FontAwesomeIcon
-          icon={faForward}
+        <FaForward 
           className={`${styles.array} ${styles.controlIcon}`}
           onClick={toLastPage}
         />

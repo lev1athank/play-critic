@@ -17,6 +17,7 @@ const RegField = () => {
 
   const nullData = {
     login: "",
+    userName: "",
     password: "",
     rePassword: "",
   };
@@ -24,8 +25,8 @@ const RegField = () => {
   const [dataReg, setDataReg] = useState(nullData);
 
   const data = z.object({
-    login: z.string().min(1, { message: "логин отсутствует" }),
-    password: z.string().min(6, { message: "пароль должен быть минимум из 6 символов" }),
+    login: z.string().min(2, { message: "логин должен быть минимум из 2 символов" }).max(30, { message: "логин не должен превышать 30 символов" }),
+    password: z.string().min(6, { message: "пароль должен быть минимум из 6 символов" }).max(100, { message: "пароль не должен превышать 100 символов" }),
   });
 
   const sendSubmit = async (form: FormEvent) => {
@@ -46,6 +47,19 @@ const RegField = () => {
       newFieldErrors.rePassword = true;
     }
 
+    if (typeFormAuth) {
+      console.log(typeFormAuth);
+      
+      if(dataReg.userName.length < 3)
+            newAlerts.push("Имя пользователя должен быть минимум из 3 символов");
+            newFieldErrors.userName = true;
+
+      if(dataReg.userName.length > 30)
+            newAlerts.push("Имя пользователя не должно превышать 30 символов");
+            newFieldErrors.userName = true;
+      
+    }
+
     setAlerts(newAlerts);
     setFieldErrors(newFieldErrors);
 
@@ -55,7 +69,7 @@ const RegField = () => {
       await apiClient.post(`/auth/${typeFormAuth ? "signup" : "login"}`, {
         ...dataReg,
       });
-      
+
       setIsAuth(true);
       setIsRegShow(false);
       location.reload();
@@ -121,6 +135,24 @@ const RegField = () => {
                   className={fieldErrors.login ? styles.error : ""}
                 />
               </label>
+
+              {
+                typeFormAuth && (
+                  <label>
+                    <span>Имя пользователя</span>
+                    <input
+                      type="text"
+                      name="userName"
+                      value={dataReg.userName}
+                      onChange={setData}
+                      autoFocus
+                      autoComplete="username"
+                      placeholder="Введите имя пользователя"
+                      className={fieldErrors.userName ? styles.error : ""}
+                    />
+                  </label>
+                )
+              }
 
               <label>
                 <span>Пароль</span>
